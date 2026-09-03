@@ -8,10 +8,15 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
-  generate:
+  generate-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: 코드 체크아웃
         uses: actions/checkout@v4
@@ -29,10 +34,11 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python generate_news.py
 
-      - name: 변경사항 커밋 및 푸시
-        run: |
-          git config user.name "CSO Daily Bot"
-          git config user.email "bot@promr.co.kr"
-          git add index.html
-          git diff --staged --quiet || git commit -m "📰 $(date +'%Y-%m-%d') CSO 데일리 브리핑 업데이트"
-          git push
+      - name: GitHub Pages 업로드
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: GitHub Pages 배포
+        id: deployment
+        uses: actions/deploy-pages@v4
