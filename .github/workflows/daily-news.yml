@@ -1,0 +1,38 @@
+name: CSO 데일리 브리핑 자동 생성
+
+on:
+  schedule:
+    # 매일 오전 7시 KST (UTC 22:00 전날)
+    - cron: '0 22 * * *'
+  workflow_dispatch:   # 수동 실행 버튼
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 의존성 설치
+        run: pip install anthropic feedparser
+
+      - name: 뉴스 생성
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python generate_news.py
+
+      - name: 변경사항 커밋 및 푸시
+        run: |
+          git config user.name "CSO Daily Bot"
+          git config user.email "bot@promr.co.kr"
+          git add index.html
+          git diff --staged --quiet || git commit -m "📰 $(date +'%Y-%m-%d') CSO 데일리 브리핑 업데이트"
+          git push
