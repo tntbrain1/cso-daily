@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSO Weekly Insight Vol.008 — 프로엠알</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 20px 0;
+    background-color: #eef0f5;
+    font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .email-wrapper {
+    max-width: 640px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  }
+  .header {
+    background: linear-gradient(140deg, #0e1e4a 0%, #1a2b5f 40%, #2d4a9e 100%);
+    padding: 44px 36px 36px;
+    text-align: center;
+  }
+  .header-eyebrow {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    color: #a8c0ff;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 16px;
+  }
+  .header h1 { color: #fff; font-size: 28px; font-weight: 800; letter-spacing: -0.8px; margin: 0 0 8px 0; line-height: 1.2; }
+  .header .subtitle { color: #8aaee8; font-size: 14px; font-weight: 400; margin: 0 0 20px 0; }
+  .header .edition {
+    display: inline-block; background: rgba(255,255,255,0.18); color: #fff;
+    font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+  .divider { height: 1px; background: linear-gradient(to right, transparent, #dee2ee, transparent); margin: 0; }
+  .section { padding: 32px 36px; }
+  .section-label {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #eef2ff; color: #1a2b5f;
+    font-size: 10px; font-weight: 800; padding: 4px 12px; border-radius: 4px;
+    margin-bottom: 14px; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .section h2 { font-size: 20px; font-weight: 700; color: #0e1e4a; margin: 0 0 18px 0; line-height: 1.55; letter-spacing: -0.4px; }
+  .section p { font-size: 14px; color: #444; line-height: 1.85; margin: 0 0 12px 0; }
+  .intro-section { padding: 28px 36px 24px; background: #fafbff; border-bottom: 1px solid #dee2ee; }
+  .intro-avatar-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+  .intro-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, #1a2b5f, #2d4a9e);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 18px; flex-shrink: 0;
+  }
+  .intro-name { font-size: 13px; font-weight: 700; color: #1a2b5f; }
+  .intro-title { font-size: 11px; color: #888; margin-top: 2px; }
+  .intro-body { font-size: 14px; color: #333; line-height: 1.85; }
+  .main-issue-section { padding: 32px 36px; background: #f9faff; }
+  .main-issue-card {
+    background: #fff; border-radius: 10px;
+    border: 1px solid #dee2ee; border-left: 4px solid #1a2b5f;
+    padding: 24px 24px 20px; margin-top: 14px;
+  }
+  .main-issue-card h3 { font-size: 17px; font-weight: 700; color: #0e1e4a; margin: 0 0 16px 0; line-height: 1.55; }
+  .issue-sub {
+    font-size: 11px; font-weight: 800; color: #2d4a9e;
+    letter-spacing: 1px; text-transform: uppercase;
+    margin: 16px 0 6px 0; display: flex; align-items: center; gap: 6px;
+  }
+  .issue-sub::before { content: ''; display: inline-block; width: 3px; height: 12px; background: #2d4a9e; border-radius: 2px; }
+  .main-issue-card p { font-size: 13.5px; color: #444; line-height: 1.85; margin: 0 0 4px 0; }
+  .implication-box { background: #eef2ff; border-radius: 6px; padding: 14px 16px; margin-top: 16px; }
+  .implication-box p { font-size: 13px; color: #2d3a6b; margin: 0; line-height: 1.75; }
+  .article-card {
+    background: #f8f9fc; border-radius: 10px; padding: 20px 22px; margin-bottom: 14px;
+    border-left: 3px solid #2d4a9e;
+  }
+  .article-card h3 { font-size: 15px; font-weight: 700; color: #0e1e4a; margin: 0 0 10px 0; line-height: 1.55; }
+  .article-card p { font-size: 13px; color: #555; margin: 0 0 10px 0; line-height: 1.8; }
+  .article-card .meta { font-size: 11px; color: #999; }
+  .tag {
+    display: inline-block; background: #e8edf8; color: #2d4a9e;
+    font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 3px;
+    margin-right: 4px; margin-top: 4px;
+  }
+  .article-link {
+    display: inline-block; background: #fff; border: 1.5px solid #2d4a9e; color: #2d4a9e;
+    text-decoration: none; padding: 7px 18px; border-radius: 6px;
+    font-size: 12px; font-weight: 700; margin-top: 12px;
+  }
+  .article-link:hover { background: #2d4a9e; color: #fff; }
+  .term-box {
+    background: #fff8e6; border-radius: 7px; border-left: 3px solid #f5a623;
+    padding: 13px 16px; margin: 12px 0;
+  }
+  .term-box .term-title { font-size: 11px; font-weight: 800; color: #8a5c00; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 5px; }
+  .term-box p { font-size: 12.5px; color: #6b4c00; line-height: 1.75; margin: 0; }
+  .tip-box { background: #fff8e1; border-radius: 9px; padding: 18px 20px; margin-bottom: 14px; border-left: 3px solid #f5a623; }
+  .tip-box h3 { font-size: 14px; font-weight: 700; color: #7a5d00; margin: 0 0 8px 0; }
+  .tip-box p { font-size: 13px; color: #6b5a1f; margin: 0; line-height: 1.8; }
+  .stat-row { display: flex; gap: 12px; margin-bottom: 16px; }
+  .stat-card {
+    flex: 1; background: #f8f9fc; border-radius: 10px; padding: 20px 14px;
+    text-align: center; border-top: 3px solid #2d4a9e;
+  }
+  .stat-card .number { font-size: 28px; font-weight: 900; color: #1a2b5f; letter-spacing: -1px; line-height: 1; }
+  .stat-card .unit { font-size: 14px; font-weight: 700; color: #2d4a9e; }
+  .stat-card .label { font-size: 11px; color: #888; margin-top: 6px; line-height: 1.5; }
+  .stat-note { font-size: 11px; color: #aaa; text-align: center; margin: 0; }
+  .promr-box {
+    background: linear-gradient(135deg, #f0faf0 0%, #e8f5e9 100%);
+    border-radius: 10px; padding: 22px 24px; margin-bottom: 14px; border-left: 3px solid #2e7d32;
+  }
+  .promr-box h3 { font-size: 16px; font-weight: 700; color: #1b5e20; margin: 0 0 10px 0; line-height: 1.5; }
+  .promr-box p { font-size: 13.5px; color: #2e5c2e; margin: 0 0 16px 0; line-height: 1.85; }
+  .cta-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #1a2b5f 0%, #2d4a9e 100%);
+    color: #fff; text-decoration: none; padding: 13px 30px; border-radius: 8px;
+    font-size: 14px; font-weight: 700; box-shadow: 0 4px 14px rgba(45,74,158,0.30);
+  }
+  .quote-box {
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8edff 100%);
+    border-radius: 10px; padding: 24px 28px; margin-bottom: 14px;
+    text-align: center; font-style: italic; color: #2a3060;
+    font-size: 15px; line-height: 1.8; border: 1px solid #d0d8f5;
+  }
+  .quote-box .quote-mark { display: block; font-size: 36px; color: #2d4a9e; opacity: 0.25; line-height: 1; margin-bottom: 6px; font-style: normal; }
+  .footer { background: #f2f3f8; padding: 28px 36px; text-align: center; border-top: 1px solid #dee2ee; }
+  .footer-logo { font-size: 14px; font-weight: 800; color: #1a2b5f; margin-bottom: 4px; }
+  .footer p { font-size: 11.5px; color: #888; margin: 4px 0; line-height: 1.7; }
+  .footer a { color: #2d4a9e; text-decoration: none; font-weight: 600; }
+  .footer-links { margin: 12px 0 8px; }
+  .footer-links a { font-size: 11px; color: #666; margin: 0 8px; text-decoration: none; font-weight: 500; }
+  .footer-copy { font-size: 10.5px; color: #bbb; margin-top: 10px; }
+  @media (max-width: 640px) {
+    body { padding: 0; }
+    .email-wrapper { border-radius: 0; box-shadow: none; }
+    .header { padding: 32px 22px 28px; }
+    .header h1 { font-size: 22px; }
+    .section, .main-issue-section, .intro-section { padding: 24px 18px; }
+    .stat-row { flex-direction: column; }
+    .footer { padding: 20px 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="email-wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-eyebrow">ProMR &middot; CSO Intelligence</div>
+    <h1>CSO Weekly Insight</h1>
+    <p class="subtitle">프로엠알이 정리한 이번 주 제약 업계 핵심</p>
+    <span class="edition">Vol. 008 &middot; 2026.08.28</span>
+  </div>
+
+  <!-- 인트로 -->
+  <div class="intro-section">
+    <div class="intro-avatar-row">
+      <div class="intro-avatar">K</div>
+      <div>
+        <div class="intro-name">김현준 (프로엠알 대표)</div>
+        <div class="intro-title">프로엠알 &middot; CSO 위클리 인사이트 발행인</div>
+      </div>
+    </div>
+    <p class="intro-body">
+      지난 호에서 "점검 기준이 공개된 것은 준비할 목록이 공개된 것"이라고 말씀드렸습니다. 일주일 만에 그 채점표가 실제로 쓰이는 장면이 나왔습니다.<br><br>
+      <strong>일동제약이 심사를 거쳐 CSO 법인 10여 곳을 확정했습니다.</strong> 아무나 맡기는 시대가 아니라, 심사를 통과한 곳만 맡기는 시대로 넘어간 것입니다.<br><br>
+      그런데 같은 주에 정반대의 숫자도 나왔습니다. 6월에 CSO 전환을 단행한 신풍제약의 상반기 성적표는 영업손실 84억 원이었습니다. 전환이 곧 절감은 아니라는 냉정한 증거입니다.<br><br>
+      이번 호는 이 두 장면을 나란히 놓고 봅니다. <strong>제약사는 슬림해지고, 외주는 전문화됩니다.</strong> 그 재편에서 누가 선택받는지가 이번 주의 주제입니다.
+    </p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 01 -->
+  <div class="main-issue-section">
+    <span class="section-label">01 &nbsp; 메인 이슈</span>
+    <h2>일동제약, 의원 시장에 CSO 도입 &mdash;<br>'심사를 통과한 10여 곳'이라는 새 기준</h2>
+
+    <div class="main-issue-card">
+      <div class="meta" style="font-size:11px; color:#999; margin-bottom:14px;">데일리팜 &middot; 시사저널e &middot; 2026-08-25~26</div>
+
+      <div class="issue-sub">무슨 일이 있었나</div>
+      <p>
+        일동제약이 전문의약품 영업에 CSO를 도입하고 <strong>9월부터 투트랙 체제</strong>를 가동합니다. 기존 거래처는 자체 영업팀이 그대로 맡고, 거래 규모가 미미하거나 신규 확보가 필요한 <strong>의원급</strong>을 CSO에 위탁하는 구조입니다. 기존 ETC 영업 조직과 인력에는 변동이 없고, 위탁 품목은 자체 개발&middot;생산 제품으로 한정했습니다.
+      </p>
+
+      <div class="issue-sub">가장 주목할 대목</div>
+      <p>
+        일동제약은 <strong>심사를 거쳐 CSO 법인 10여 곳을 확정</strong>하고 최근 설명회를 열었습니다. 여기에 그룹 관계사의 CP-LINK 솔루션을 붙여 위탁 영업 과정의 투명성과 컴플라이언스 리스크를 관리하겠다고 밝혔습니다. 지난 호에서 다룬 CP 가이드북의 CSO 계약 체크리스트가 <strong>발행 2주 만에 실제 선정 기준으로 작동한 사례</strong>입니다.
+      </p>
+
+      <div class="issue-sub">업계가 짚는 리스크</div>
+      <p>
+        업계는 같은 의료기관에 자체 MR과 CSO가 중복 접근할 가능성을 우려합니다. 다른 제약사에서는 이 과정에서 MR의 자진 퇴사가 발생한 전례가 있습니다. 결국 <strong>영역 구분과 실적 귀속 기준을 얼마나 정교하게 설계하느냐</strong>가 성패를 가릅니다.
+      </p>
+
+      <div class="implication-box">
+        <p>
+          <strong>CSO 법인 대표(C)에게:</strong> 이제 영업의 시작은 "제안"이 아니라 "심사 통과"입니다. 신고증&middot;교육 이수&middot;표준 계약서&middot;활동 기록 체계를 한 벌의 자료로 정리해 두세요. 요청받고 준비하면 이미 늦습니다.<br><br>
+          <strong>제약사 영업본부장(B)에게:</strong> 투트랙의 승부처는 위탁 범위 문서화입니다. 거래처&middot;품목&middot;실적 귀속 기준을 계약서에 명시하지 않으면 갈등 비용이 절감액을 넘어섭니다.
+        </p>
+      </div>
+
+      <div style="margin-top:16px;">
+        <span class="tag">일동제약</span>
+        <span class="tag">투트랙영업</span>
+        <span class="tag">CSO선정심사</span>
+        <span class="tag">컴플라이언스</span>
+      </div>
+      <a href="https://www.dailypharm.com/user/news/341744" class="article-link" target="_blank">데일리팜 원문 보기 &rarr;</a>
+    </div>
+
+    <div class="stat-row" style="margin-top:20px;">
+      <div class="stat-card">
+        <div class="number">10<span class="unit">여 곳</span></div>
+        <div class="label">일동제약이 심사로 확정한<br>CSO 법인 수</div>
+      </div>
+      <div class="stat-card">
+        <div class="number">-84<span class="unit">억</span></div>
+        <div class="label">신풍제약 상반기 영업손익<br>(전년 +32억)</div>
+      </div>
+      <div class="stat-card">
+        <div class="number">6<span class="unit">개월</span></div>
+        <div class="label">약가인하 연기로<br>확보된 대응 시간</div>
+      </div>
+    </div>
+    <p class="stat-note">출처: 데일리팜(2026-08-25) &middot; 시사저널e(2026-08-24) &middot; 서울경제(2026-08-28)</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 02 -->
+  <div class="section">
+    <span class="section-label">02 &nbsp; 전환의 성적표</span>
+    <h2>신풍제약 상반기 영업손실 84억 &mdash;<br>"전환하면 비용이 줄어든다"는 착각</h2>
+
+    <div class="article-card">
+      <h3>인건비는 줄었는데 판관비는 110억 늘었다</h3>
+      <span class="meta">시사저널e &middot; 2026-08-24</span>
+      <p style="margin-top:10px;">
+        신풍제약은 의원 담당 영업사원 120여 명이 5월 말까지 퇴사&middot;이직한 뒤 6월 1일부터 CSO 체제를 공식 시행했습니다. 직원 수는 3월 말 788명에서 6월 말 666명으로 줄었습니다. 그런데 상반기 <strong>영업이익은 전년 +32억 원에서 -84억 원으로 적자 전환</strong>했고, 영업이익률은 2.78%에서 -7.09%로 9.87%p 떨어졌습니다.
+      </p>
+      <p>
+        핵심은 판매관리비입니다. 인력이 122명 줄었는데도 판관비는 458억 원에서 <strong>568억 원으로 110억 원 늘었고</strong>, 판관비율은 40.16%에서 47.96%로 7.80%p 상승했습니다. 인건비 절감분을 판매대행수수료와 마케팅 비용이 그대로 삼킨 것입니다.
+      </p>
+
+      <div class="term-box">
+        <div class="term-title">참고 &middot; 전환 첫해에 판관비가 오히려 늘어나는 이유</div>
+        <p>퇴직 위로금 같은 일회성 비용, 품목 이관 기간의 이중 지급, 초기 시장 방어를 위한 판촉비 증액이 겹칩니다. 여기에 수수료는 매출에 연동되므로 매출이 유지될수록 비용도 함께 늘어납니다. 전환 결정 전 최소 2년치 현금흐름 시뮬레이션이 필요한 이유입니다.</p>
+      </div>
+
+      <span class="tag">신풍제약</span>
+      <span class="tag">CSO전환비용</span>
+      <span class="tag">판관비율</span>
+      <a href="https://www.sisajournal-e.com/news/articleView.html?idxno=423268" class="article-link" target="_blank">시사저널e 원문 보기 &rarr;</a>
+    </div>
+
+    <div class="article-card">
+      <h3>제약사는 슬림화, 외주는 전문화 &mdash; 재편의 방향은 분명하다</h3>
+      <span class="meta">데일리팜 &middot; 업계 종합</span>
+      <p style="margin-top:10px;">
+        법률&middot;홍보&middot;경제성평가에 이어 영업까지, 제약사가 외부에 맡기는 업무의 범위가 넓어지고 있습니다. 인건비를 고정비에서 변동비로 바꿔 R&amp;D와 생산에 집중하겠다는 전략입니다. 다만 신풍제약 사례가 보여주듯 <strong>비용 구조를 바꾸는 것과 비용을 줄이는 것은 다른 문제</strong>입니다. 위탁하는 쪽도, 받는 쪽도 숫자로 관리하지 않으면 양쪽 모두 손해를 봅니다.
+      </p>
+      <span class="tag">영업외주화</span>
+      <span class="tag">변동비전환</span>
+      <span class="tag">서비스시장재편</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 03 -->
+  <div class="section" style="background:#f9faff;">
+    <span class="section-label">03 &nbsp; 지금 챙겨야 할 일정</span>
+    <h2>약가인하 6개월 연기 &middot; 판촉영업자 교육 의무</h2>
+
+    <div class="tip-box">
+      <h3>기등재 제네릭 약가인하, 내년 4월로 연기 &mdash; 6개월을 벌었다</h3>
+      <p>
+        서울경제 &middot; 2026-08-28 &mdash; 정부가 기등재 제네릭 약가인하 시행을 하반기에서 <strong>내년 4월로 연기</strong>했습니다. 오리지널 대비 53.55%에서 내년 4월 약 51% 수준으로 낮춘 뒤 단계적으로 45%까지 내리는 일정입니다. 업계가 추산한 피해 규모는 연 최대 3조 6,000억 원 수준이었습니다.
+        <br><br>
+        <strong>이 6개월은 유예가 아니라 준비 기간입니다.</strong> 약가가 내려가면 판매대행수수료율 인하 요구가 뒤따릅니다. 품목별 손익 구조를 지금 파악해 두어야 협상 테이블에서 근거를 갖고 말할 수 있습니다.
+      </p>
+    </div>
+
+    <div class="tip-box">
+      <h3>판촉영업자 신규교육 24시간 &middot; 보수교육 매년 8시간</h3>
+      <p>
+        보건복지부 &middot; 약사법 시행규칙 &mdash; CSO 신고 시 <strong>24시간 신규교육 이수</strong>가 신고 기준이며, 이후 <strong>매년 8시간 보수교육</strong>이 의무입니다. 교육은 신고증 발급 후 3개월 이내에 받아야 하고, 수료증은 발급일로부터 1개월 이내에 관할 시&middot;군&middot;구에 제출해야 합니다. 미이수는 그 자체로 결격 사유이자, 제약사 심사에서 가장 먼저 확인하는 항목입니다.
+      </p>
+    </div>
+
+    <div class="tip-box">
+      <h3>매출원가율 양극화 &mdash; 위탁사의 사정이 곧 수수료 협상의 배경</h3>
+      <p>
+        데일리팜 &middot; 업계 종합 &mdash; 상장 제약바이오기업의 매출원가율이 4년 연속 개선됐지만 기업 유형별 격차는 더 벌어졌습니다. 고수익 바이오&middot;에스테틱과 달리 <strong>전통 제약사는 약가인하 압박을 정면으로 받는 구조</strong>입니다. 거래 제약사의 원가율과 수익 구조를 알고 협상에 들어가는 것과 모르고 들어가는 것은 결과가 다릅니다.
+      </p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 04 -->
+  <div class="section">
+    <span class="section-label">04 &nbsp; ProMR 인사이트</span>
+    <h2>선택받는 CSO의 조건은 '규모'가 아니라 '증명 가능성'입니다</h2>
+
+    <div class="promr-box">
+      <h3>이번 주, 시장은 두 개의 메시지를 동시에 보냈습니다</h3>
+      <p>
+        하나는 <strong>기회</strong>입니다. 일동제약처럼 대형사가 다시 CSO 문을 열고 있습니다. 다른 하나는 <strong>경고</strong>입니다. 신풍제약의 숫자는 전환이 만능이 아님을 보여줍니다.<br><br>
+        이 둘을 합치면 답이 나옵니다. 제약사는 앞으로 <strong>더 적은 수의, 더 검증된 CSO</strong>와 일하려 할 것입니다. 위탁했는데 손실이 나면 다음엔 파트너를 바꾸기 때문입니다. 선택 기준은 규모가 아니라, <strong>맡긴 일이 어떻게 되고 있는지 보여줄 수 있는가</strong>입니다.
+      </p>
+      <h3>보여줄 수 있는 것만 증명이 됩니다</h3>
+      <p>
+        신고증과 교육 수료증은 자격 요건일 뿐입니다. 실제로 갈리는 지점은 그다음입니다. 거래처별 방문 기록이 남아 있는가, 품목별 수수료 정산 근거를 언제든 뽑을 수 있는가, 지출보고서와 CP 점검 기준에 맞는 데이터가 자동으로 쌓이고 있는가.<br><br>
+        프로엠알은 CSO 법인이 이 세 가지를 시스템으로 확보하도록 돕습니다. 심사 요청이 왔을 때 며칠을 들여 자료를 만드는 회사와, 화면을 열어 보여주는 회사의 차이 &mdash; 그 차이가 계약을 가릅니다.
+      </p>
+      <div style="text-align:center; padding:4px 0 2px;">
+        <a href="https://promr.co.kr" class="cta-button" target="_blank">프로엠알 상담 신청 &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Quote -->
+  <div class="section">
+    <div class="quote-box">
+      <span class="quote-mark">&ldquo;</span>
+      이제 영업의 시작은 제안이 아니라 심사 통과입니다.<br>
+      그리고 심사는 규모가 아니라<br>
+      증명할 수 있는가를 봅니다.
+      <br><span style="font-style:normal; font-size:12px; color:#8899bb; margin-top:6px; display:block;">&mdash; CSO 위클리 인사이트, Vol.008</span>
+    </div>
+    <p style="font-size:13.5px; color:#555; text-align:center; line-height:1.8; margin:0;">
+      재편의 한복판에서 현장을 지키는 CSO&middot;제약 영업 실무자 여러분을 응원합니다.<br>
+      다루었으면 하는 주제나 피드백은 언제든 회신해 주세요.
+    </p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-logo">CSO Weekly Insight &nbsp;by&nbsp; <a href="https://promr.co.kr" target="_blank">ProMR</a></div>
+    <p>프로엠알(ProMR) &nbsp;|&nbsp; 제약&middot;CSO MR 관리 플랫폼</p>
+    <div class="footer-links">
+      <a href="https://promr.co.kr" target="_blank">웹사이트</a>
+      <a href="tel:02-6952-0924">전화 02-6952-0924</a>
+      <a href="mailto:ai@promr.co.kr">ai@promr.co.kr</a>
+      <a href="https://www.linkedin.com/in/promrceo/" target="_blank">LinkedIn</a>
+    </div>
+    <p class="footer-copy">
+      본 뉴스레터는 정보 제공 목적으로 제작되었으며, 법률&middot;투자 자문이 아닙니다.<br>
+      &copy; 2026 ProMR. All rights reserved.
+    </p>
+  </div>
+
+</div>
+</body>
+</html>

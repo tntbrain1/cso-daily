@@ -287,6 +287,37 @@ def summarize_with_claude(articles: list[dict]) -> list[dict]:
     return summarized[:MAX_NEWS_CARDS]
 
 
+# ── 위클리 인사이트 스캔 ─────────────────────────────────────────
+def get_weekly_issues() -> list[dict]:
+    """weekly/ 폴더의 발행본에서 호수·날짜·헤드라인 추출 (최신순)"""
+    weekly_dir = os.path.join(os.path.dirname(__file__), "weekly")
+    issues = []
+    if not os.path.isdir(weekly_dir):
+        return issues
+    for fname in sorted(os.listdir(weekly_dir), reverse=True):
+        if not re.match(r"vol\d+\.html$", fname):
+            continue
+        path = os.path.join(weekly_dir, fname)
+        try:
+            with open(path, encoding="utf-8") as f:
+                content = f.read()
+        except OSError:
+            continue
+        ed = re.search(r'class="edition"[^>]*>([^<]+)<', content)
+        h2 = re.search(r"<h2[^>]*>([\s\S]*?)</h2>", content)
+        headline = ""
+        if h2:
+            headline = html.unescape(re.sub(r"<[^>]+>", " ", h2.group(1)))
+            headline = re.sub(r"\s+", " ", headline).strip()
+        issues.append({
+            "file": f"weekly/{fname}",
+            "vol": fname[3:-5].lstrip("0"),
+            "edition": html.unescape(ed.group(1)).strip() if ed else fname[:-5],
+            "headline": headline,
+        })
+    return issues
+
+
 # ── HTML 생성 ────────────────────────────────────────────────────
 TAG_STYLES = {
     "policy": ("tag-policy", "규제·정책"),
@@ -310,6 +341,39 @@ def make_tag(cat: str) -> str:
 def make_impact_tag(impact: str) -> str:
     cls, label = IMPACT_LABELS.get(impact, ("tag-company", "참고"))
     return f'<span class="tag {cls}" style="font-size:10px">{label}</span>'
+
+
+def build_weekly_section(issues: list[dict]) -> str:
+    if not issues:
+        return ""
+    latest = issues[0]
+    archive = issues[1:6]
+    archive_html = "\n".join(
+        f'<a href="{i["file"]}" class="weekly-archive-item">'
+        f'<span class="weekly-vol">Vol.{i["vol"].zfill(3)}</span>'
+        f'<span class="weekly-arch-title">{html.escape(i["headline"][:42])}</span></a>'
+        for i in archive
+    )
+    return f"""
+  <div class="section-header" style="margin-top:8px">
+    <span class="section-label">위클리 인사이트</span>
+    <div class="section-rule"></div>
+  </div>
+  <div class="weekly-grid">
+    <a href="{latest['file']}" class="card weekly-featured">
+      <div class="weekly-featured-inner">
+        <span class="weekly-edition">{html.escape(latest['edition'])} · 매주 금요일 발행</span>
+        <h2 class="weekly-headline">{html.escape(latest['headline'])}</h2>
+        <p class="weekly-desc">이번 주 CSO 산업의 핵심 이슈를 깊이 있게 분석한 프로엠알의 주간 뉴스레터입니다.</p>
+        <span class="read-more-link">전체 읽기 →</span>
+      </div>
+    </a>
+    <div class="card weekly-archive">
+      <div class="weekly-archive-head">지난 호 보기</div>
+      {archive_html}
+    </div>
+  </div>
+"""
 
 
 def build_html(articles: list[dict]) -> str:
@@ -379,6 +443,7 @@ def build_html(articles: list[dict]) -> str:
     grid_html = "\n".join(card_html(a, "news") for a in grid_cards)
 
     no_articles_msg = "" if articles else "<p style='text-align:center;padding:40px;color:var(--text-muted)'>오늘은 새로운 CSO 관련 뉴스가 없습니다.</p>"
+    weekly_html = build_weekly_section(get_weekly_issues())
 
     return f"""<!DOCTYPE html>
 <html lang="ko">
@@ -485,6 +550,19 @@ a{{color:inherit;text-decoration:none}}
 .news-headline{{font-family:'Noto Serif KR',serif;font-size:15.5px;font-weight:700;color:var(--text);line-height:1.45;text-wrap:balance}}
 .news-body{{font-size:13px;color:var(--text-muted);line-height:1.7;flex:1}}
 .news-footer{{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid var(--border);font-size:11px;color:var(--text-faint)}}
+.weekly-grid{{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;margin-bottom:40px}}
+@media(max-width:820px){{.weekly-grid{{grid-template-columns:1fr}}}}
+.weekly-featured{{display:flex}}
+.weekly-featured-inner{{padding:26px 28px;display:flex;flex-direction:column;gap:12px}}
+.weekly-edition{{font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--accent);text-transform:uppercase}}
+.weekly-headline{{font-family:'Noto Serif KR',serif;font-size:clamp(17px,2.2vw,22px);font-weight:700;line-height:1.4;color:var(--text);text-wrap:balance}}
+.weekly-desc{{font-size:13px;color:var(--text-muted);line-height:1.7;flex:1}}
+.weekly-archive{{display:flex;flex-direction:column;padding:10px 0}}
+.weekly-archive-head{{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);padding:10px 20px 6px}}
+.weekly-archive-item{{display:flex;align-items:baseline;gap:12px;padding:10px 20px;border-top:1px solid var(--border);transition:background .15s}}
+.weekly-archive-item:hover{{background:var(--surface2)}}
+.weekly-vol{{font-size:11px;font-weight:600;color:var(--accent);flex-shrink:0}}
+.weekly-arch-title{{font-size:13px;color:var(--text-muted);line-height:1.5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
 .promr-section{{background:linear-gradient(135deg,#0D1B2E 0%,#1A3354 100%);border:1px solid rgba(10,191,188,.2);border-radius:14px;padding:36px 40px;margin-bottom:40px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;position:relative;overflow:hidden}}
 .promr-section::after{{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(10,191,188,.12) 0%,transparent 70%);pointer-events:none}}
 @media(max-width:640px){{.promr-section{{grid-template-columns:1fr;padding:24px}}}}
@@ -571,6 +649,8 @@ a{{color:inherit;text-decoration:none}}
     {grid_html}
     {no_articles_msg}
   </div>
+
+  {weekly_html}
 
   <div class="promr-section">
     <div class="promr-content">

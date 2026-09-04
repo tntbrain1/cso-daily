@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSO Weekly Insight Vol.007 — 프로엠알</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 20px 0;
+    background-color: #eef0f5;
+    font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .email-wrapper {
+    max-width: 640px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  }
+  .header {
+    background: linear-gradient(140deg, #0e1e4a 0%, #1a2b5f 40%, #2d4a9e 100%);
+    padding: 44px 36px 36px;
+    text-align: center;
+  }
+  .header-eyebrow {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    color: #a8c0ff;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 16px;
+  }
+  .header h1 { color: #fff; font-size: 28px; font-weight: 800; letter-spacing: -0.8px; margin: 0 0 8px 0; line-height: 1.2; }
+  .header .subtitle { color: #8aaee8; font-size: 14px; font-weight: 400; margin: 0 0 20px 0; }
+  .header .edition {
+    display: inline-block; background: rgba(255,255,255,0.18); color: #fff;
+    font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+  .divider { height: 1px; background: linear-gradient(to right, transparent, #dee2ee, transparent); margin: 0; }
+  .section { padding: 32px 36px; }
+  .section-label {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #eef2ff; color: #1a2b5f;
+    font-size: 10px; font-weight: 800; padding: 4px 12px; border-radius: 4px;
+    margin-bottom: 14px; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .section h2 { font-size: 20px; font-weight: 700; color: #0e1e4a; margin: 0 0 18px 0; line-height: 1.55; letter-spacing: -0.4px; }
+  .section p { font-size: 14px; color: #444; line-height: 1.85; margin: 0 0 12px 0; }
+  .intro-section { padding: 28px 36px 24px; background: #fafbff; border-bottom: 1px solid #dee2ee; }
+  .intro-avatar-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+  .intro-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, #1a2b5f, #2d4a9e);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 18px; flex-shrink: 0;
+  }
+  .intro-name { font-size: 13px; font-weight: 700; color: #1a2b5f; }
+  .intro-title { font-size: 11px; color: #888; margin-top: 2px; }
+  .intro-body { font-size: 14px; color: #333; line-height: 1.85; }
+  .main-issue-section { padding: 32px 36px; background: #f9faff; }
+  .main-issue-card {
+    background: #fff; border-radius: 10px;
+    border: 1px solid #dee2ee; border-left: 4px solid #1a2b5f;
+    padding: 24px 24px 20px; margin-top: 14px;
+  }
+  .main-issue-card h3 { font-size: 17px; font-weight: 700; color: #0e1e4a; margin: 0 0 16px 0; line-height: 1.55; }
+  .issue-sub {
+    font-size: 11px; font-weight: 800; color: #2d4a9e;
+    letter-spacing: 1px; text-transform: uppercase;
+    margin: 16px 0 6px 0; display: flex; align-items: center; gap: 6px;
+  }
+  .issue-sub::before { content: ''; display: inline-block; width: 3px; height: 12px; background: #2d4a9e; border-radius: 2px; }
+  .main-issue-card p { font-size: 13.5px; color: #444; line-height: 1.85; margin: 0 0 4px 0; }
+  .implication-box { background: #eef2ff; border-radius: 6px; padding: 14px 16px; margin-top: 16px; }
+  .implication-box p { font-size: 13px; color: #2d3a6b; margin: 0; line-height: 1.75; }
+  .article-card {
+    background: #f8f9fc; border-radius: 10px; padding: 20px 22px; margin-bottom: 14px;
+    border-left: 3px solid #2d4a9e;
+  }
+  .article-card h3 { font-size: 15px; font-weight: 700; color: #0e1e4a; margin: 0 0 10px 0; line-height: 1.55; }
+  .article-card p { font-size: 13px; color: #555; margin: 0 0 10px 0; line-height: 1.8; }
+  .article-card .meta { font-size: 11px; color: #999; }
+  .tag {
+    display: inline-block; background: #e8edf8; color: #2d4a9e;
+    font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 3px;
+    margin-right: 4px; margin-top: 4px;
+  }
+  .article-link {
+    display: inline-block; background: #fff; border: 1.5px solid #2d4a9e; color: #2d4a9e;
+    text-decoration: none; padding: 7px 18px; border-radius: 6px;
+    font-size: 12px; font-weight: 700; margin-top: 12px;
+  }
+  .article-link:hover { background: #2d4a9e; color: #fff; }
+  .term-box {
+    background: #fff8e6; border-radius: 7px; border-left: 3px solid #f5a623;
+    padding: 13px 16px; margin: 12px 0;
+  }
+  .term-box .term-title { font-size: 11px; font-weight: 800; color: #8a5c00; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 5px; }
+  .term-box p { font-size: 12.5px; color: #6b4c00; line-height: 1.75; margin: 0; }
+  .tip-box { background: #fff8e1; border-radius: 9px; padding: 18px 20px; margin-bottom: 14px; border-left: 3px solid #f5a623; }
+  .tip-box h3 { font-size: 14px; font-weight: 700; color: #7a5d00; margin: 0 0 8px 0; }
+  .tip-box p { font-size: 13px; color: #6b5a1f; margin: 0; line-height: 1.8; }
+  .stat-row { display: flex; gap: 12px; margin-bottom: 16px; }
+  .stat-card {
+    flex: 1; background: #f8f9fc; border-radius: 10px; padding: 20px 14px;
+    text-align: center; border-top: 3px solid #2d4a9e;
+  }
+  .stat-card .number { font-size: 28px; font-weight: 900; color: #1a2b5f; letter-spacing: -1px; line-height: 1; }
+  .stat-card .unit { font-size: 14px; font-weight: 700; color: #2d4a9e; }
+  .stat-card .label { font-size: 11px; color: #888; margin-top: 6px; line-height: 1.5; }
+  .stat-note { font-size: 11px; color: #aaa; text-align: center; margin: 0; }
+  .promr-box {
+    background: linear-gradient(135deg, #f0faf0 0%, #e8f5e9 100%);
+    border-radius: 10px; padding: 22px 24px; margin-bottom: 14px; border-left: 3px solid #2e7d32;
+  }
+  .promr-box h3 { font-size: 16px; font-weight: 700; color: #1b5e20; margin: 0 0 10px 0; line-height: 1.5; }
+  .promr-box p { font-size: 13.5px; color: #2e5c2e; margin: 0 0 16px 0; line-height: 1.85; }
+  .cta-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #1a2b5f 0%, #2d4a9e 100%);
+    color: #fff; text-decoration: none; padding: 13px 30px; border-radius: 8px;
+    font-size: 14px; font-weight: 700; box-shadow: 0 4px 14px rgba(45,74,158,0.30);
+  }
+  .quote-box {
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8edff 100%);
+    border-radius: 10px; padding: 24px 28px; margin-bottom: 14px;
+    text-align: center; font-style: italic; color: #2a3060;
+    font-size: 15px; line-height: 1.8; border: 1px solid #d0d8f5;
+  }
+  .quote-box .quote-mark { display: block; font-size: 36px; color: #2d4a9e; opacity: 0.25; line-height: 1; margin-bottom: 6px; font-style: normal; }
+  .footer { background: #f2f3f8; padding: 28px 36px; text-align: center; border-top: 1px solid #dee2ee; }
+  .footer-logo { font-size: 14px; font-weight: 800; color: #1a2b5f; margin-bottom: 4px; }
+  .footer p { font-size: 11.5px; color: #888; margin: 4px 0; line-height: 1.7; }
+  .footer a { color: #2d4a9e; text-decoration: none; font-weight: 600; }
+  .footer-links { margin: 12px 0 8px; }
+  .footer-links a { font-size: 11px; color: #666; margin: 0 8px; text-decoration: none; font-weight: 500; }
+  .footer-copy { font-size: 10.5px; color: #bbb; margin-top: 10px; }
+  @media (max-width: 640px) {
+    body { padding: 0; }
+    .email-wrapper { border-radius: 0; box-shadow: none; }
+    .header { padding: 32px 22px 28px; }
+    .header h1 { font-size: 22px; }
+    .section, .main-issue-section, .intro-section { padding: 24px 18px; }
+    .stat-row { flex-direction: column; }
+    .footer { padding: 20px 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="email-wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-eyebrow">ProMR · CSO Intelligence</div>
+    <h1>CSO Weekly Insight</h1>
+    <p class="subtitle">프로엠알이 정리한 이번 주 제약 업계 핵심</p>
+    <span class="edition">Vol. 007 &middot; 2026.08.21</span>
+  </div>
+
+  <!-- 인트로 -->
+  <div class="intro-section">
+    <div class="intro-avatar-row">
+      <div class="intro-avatar">K</div>
+      <div>
+        <div class="intro-name">김현준 (프로엠알 대표)</div>
+        <div class="intro-title">프로엠알 · CSO 위클리 인사이트 발행인</div>
+      </div>
+    </div>
+    <p class="intro-body">
+      지난 호에서 JW중외제약의 CSO 철수를 보며 "결국 남는 것은 체계"라고 말씀드렸습니다. 두 달 사이, 그 기준이 문서로 확정됐습니다.<br><br>
+      <strong>제약바이오협회가 공정경쟁규약 5차 개정을 반영한 '2026 CP 가이드북'을 발행했습니다.</strong> 학술대회 지원부터 CSO 계약 점검, 세무 체크리스트까지 — 이제 "무엇이 기준인지 몰랐다"는 말은 통하지 않는 시대가 됐습니다.<br><br>
+      동시에 국회 복지위 업무보고에 CSO 관리가 오르고, CSO협회의 사단법인화가 연내 가시권에 들어왔습니다. 규제와 제도권 편입이 같은 속도로 진행되고 있습니다. 이번 호에서는 이 흐름을 하나씩 정리합니다.
+    </p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 01: 메인 이슈 -->
+  <div class="main-issue-section">
+    <span class="section-label">01 &nbsp; 메인 이슈</span>
+    <h2>'2026 CP 가이드북' 발행 —<br>CSO 계약 점검 기준이 공식 문서가 됐다</h2>
+
+    <div class="main-issue-card">
+      <div class="meta" style="font-size:11px; color:#999; margin-bottom:14px;">약사공론 · 청년의사 · 바이오타임즈 · 2026-08-13~14</div>
+
+      <div class="issue-sub">무슨 일이 있었나</div>
+      <p>
+        한국제약바이오협회가 공정경쟁규약 <strong>5차 개정 내용을 반영한 '2026 CP 가이드북'</strong>을 발행했습니다. 학술대회 지원, 견본품 제공 같은 전통적 항목에 더해 이번 판에는 <strong>CSO 계약 점검 기준과 세무 체크리스트</strong>가 명시적으로 포함됐습니다.
+      </p>
+
+      <div class="issue-sub">왜 중요한가</div>
+      <p>
+        지금까지 CSO 계약의 적정성은 회사마다 해석이 달랐습니다. 이제 협회 차원의 <strong>공식 점검 기준</strong>이 생겼습니다. 제약사 CP팀은 이 가이드북을 근거로 CSO 파트너를 심사하게 되고, 기준에 못 미치는 CSO는 계약 갱신 단계에서 걸러질 가능성이 커졌습니다.
+      </p>
+
+      <div class="issue-sub">체계 있는 CSO에게 이 문서가 의미하는 것</div>
+      <p>
+        점검 기준이 공개됐다는 것은 곧 <strong>준비할 목록이 공개됐다</strong>는 뜻입니다. 계약서·수수료 산정 근거·활동 기록·세무 처리가 정비된 법인 CSO라면, 이 가이드북은 오히려 자신의 체계를 제약사에 증명하는 채점표가 됩니다.
+      </p>
+
+      <div class="implication-box">
+        <p>
+          <strong>CSO 법인 대표(C)에게:</strong> 가이드북의 CSO 계약 점검 항목과 세무 체크리스트를 자사 기준으로 셀프 점검하세요. 제약사가 묻기 전에 답을 준비해두는 것이 갱신 협상력입니다.<br><br>
+          <strong>제약사 영업본부장(B)에게:</strong> CP팀과 함께 위탁 계약 전수 점검 일정을 잡을 시점입니다. 가이드북 발행 이후의 계약은 "몰랐다"가 성립하지 않습니다.
+        </p>
+      </div>
+
+      <div style="margin-top:16px;">
+        <span class="tag">CP가이드북</span>
+        <span class="tag">공정경쟁규약5차개정</span>
+        <span class="tag">CSO계약점검</span>
+        <span class="tag">세무체크리스트</span>
+      </div>
+      <a href="https://www.kpanews.co.kr/news/articleView.html?idxno=540661" class="article-link" target="_blank">약사공론 원문 보기 &rarr;</a>
+    </div>
+
+    <div class="stat-row" style="margin-top:20px;">
+      <div class="stat-card">
+        <div class="number">5<span class="unit">차</span></div>
+        <div class="label">공정경쟁규약 개정<br>(2026 CP 가이드북 반영)</div>
+      </div>
+      <div class="stat-card">
+        <div class="number">30<span class="unit">%</span></div>
+        <div class="label">업계에서 논의 중인<br>수수료 상한선 수준</div>
+      </div>
+      <div class="stat-card">
+        <div class="number">50<span class="unit">%+</span></div>
+        <div class="label">일부 중견 제약사<br>판관비 중 수수료 비중</div>
+      </div>
+    </div>
+    <p class="stat-note">출처: 약사공론(2026-08-14) · 팜뉴스(2026-06) · 더밸류뉴스(2026-06)</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 02: 규제·제도권 -->
+  <div class="section">
+    <span class="section-label">02 &nbsp; 규제 · 제도권 동향</span>
+    <h2>국회·복지부·협회 — 세 갈래로 좁혀오는 제도화</h2>
+
+    <div class="article-card">
+      <h3>후반기 복지위 업무보고 — CSO 관리가 국회 의제로</h3>
+      <span class="meta">데일리팜 · 2026-08-10</span>
+      <p style="margin-top:10px;">
+        국회 보건복지위 후반기 업무보고에서 제네릭 제도 개선과 함께 CSO 관리 강화가 주요 의제로 올랐습니다. 복지부는 별도로 제약사와 CSO 간 계약 구조를 직접 들여다보는 점검도 예고한 상태입니다(뉴스락 · 2026-06-30). 개별 단속을 넘어 입법·제도 차원의 관리 체계가 만들어지는 흐름입니다.
+      </p>
+      <span class="tag">복지위업무보고</span>
+      <span class="tag">계약구조점검</span>
+      <span class="tag">판촉영업자관리</span>
+    </div>
+
+    <div class="article-card">
+      <h3>CSO협회, 연내 사단법인 허가 추진 — "1인 업체 목소리도 담겠다"</h3>
+      <span class="meta">데일리팜 · 2026-08-14</span>
+      <p style="margin-top:10px;">
+        CSO협회가 연내 사단법인 허가를 목표로 재추진에 나섰고, 복지부도 설립 필요성에 공감하는 것으로 전해집니다. 사단법인화는 CSO 산업이 정부와 공식 소통 창구를 갖는다는 의미이자, 동시에 회원사에게 자율 규제 의무가 생긴다는 의미입니다. 법무법인 대륙아주와 의약품판촉영업자협회의 업무협약(조선비즈 · 2026-08-10)도 같은 맥락의 제도권 편입 신호입니다.
+      </p>
+
+      <div class="term-box">
+        <div class="term-title">참고 · 사단법인화가 개별 CSO에 주는 의미</div>
+        <p>협회가 제도권에 들어가면 교육 이수, 표준 계약서, 자율 점검 같은 회원 의무가 뒤따르는 것이 일반적입니다. 미가입·미이수 업체와의 계약을 제약사가 기피하는 방향으로 시장이 재편될 수 있어, 법인 CSO라면 초기부터 참여해 기준 형성에 목소리를 내는 것이 유리합니다.</p>
+      </div>
+
+      <span class="tag">사단법인화</span>
+      <span class="tag">자율규제</span>
+      <span class="tag">제도권편입</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 03: 수수료 압박 -->
+  <div class="section" style="background:#f9faff;">
+    <span class="section-label">03 &nbsp; 수수료 구조 압박</span>
+    <h2>약가 인하가 수수료 인하로 — 도미노가 시작됐다</h2>
+
+    <div class="tip-box">
+      <h3>HLB제약, 수수료 1%p 인하 — 타 제약사 확산 여부 주목</h3>
+      <p>
+        시사저널e · 2026-07-30 — HLB제약이 CSO 판매대행수수료를 1%p 인하했습니다. 단독 사례로 끝날 수도 있지만, 약가 인하 압박을 받는 다른 제약사들이 뒤따를 가능성이 거론됩니다. 수수료율이 계약서에 어떻게 명시돼 있는지, 인하 시 통보 절차는 어떻게 되는지 지금 확인해둘 필요가 있습니다.
+      </p>
+    </div>
+
+    <div class="tip-box">
+      <h3>"약가 깎이자 수수료 내린다" — 저마진 제네릭부터 압박</h3>
+      <p>
+        메디팜스투데이 · 2026-08-09 — 약가 인하분을 판매대행수수료 인하로 전가하는 움직임이 저마진 제네릭 품목부터 나타나고 있습니다. 품목별 수익성을 실시간으로 파악하지 못하는 CSO는 어느 품목에서 손해를 보고 있는지도 모른 채 계약을 유지하게 됩니다. 품목 포트폴리오 점검이 필수인 시점입니다.
+      </p>
+    </div>
+
+    <div class="tip-box">
+      <h3>중견 제약사 "판관비 절반이 수수료" — 의존 구조 자체가 도마 위에</h3>
+      <p>
+        더밸류뉴스 · 2026-06-23 — 일부 중견 제약사의 판매관리비 중 판매대행수수료 비중이 절반을 넘는 것으로 나타나면서, 수수료 30% 상한제 도입 여론(팜뉴스 · 2026-06-20)에 힘이 실리고 있습니다. JW중외제약이 CSO 대행 사업을 1년 만에 접은 것(약사공론 · 2026-06-18)도 이 구조 재편의 한 단면입니다. 상한제가 현실화될 경우를 가정한 수익 시뮬레이션을 미리 해두는 것이 안전합니다.
+      </p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 04: ProMR 인사이트 -->
+  <div class="section">
+    <span class="section-label">04 &nbsp; ProMR 인사이트</span>
+    <h2>기준이 공개된 시대 — 준비된 CSO에게는 채점표입니다</h2>
+
+    <div class="promr-box">
+      <h3>가이드북은 위협이 아니라 '증명의 기회'입니다</h3>
+      <p>
+        CP 가이드북, 복지위 의제화, 사단법인화 — 이번 주 뉴스는 모두 한 방향을 가리킵니다. <strong>CSO 산업이 음지에서 제도권으로 옮겨가고 있다</strong>는 것입니다.<br><br>
+        기준이 공개되면 두 부류가 갈립니다. 기준을 보고 두려워하는 쪽과, 기준에 자신을 비춰보고 "우리는 이미 하고 있다"고 확인하는 쪽입니다. 계약서가 명확하고, 품목별 수수료 흐름이 문서로 남고, 활동 기록이 쌓여 있는 법인 CSO는 후자입니다. <strong>지금처럼 하면 됩니다.</strong>
+      </p>
+      <h3>수수료 인하 도미노 시대, 품목별 손익을 아는 CSO가 살아남습니다</h3>
+      <p>
+        프로엠알은 CSO 법인이 품목별·MR별·거래처별 수수료 흐름과 활동 기록을 실시간으로 관리하고, 지출보고서·CP 점검 기준에 맞는 데이터를 자동으로 축적할 수 있도록 돕습니다. 수수료가 1%p 움직일 때 어느 품목이 적자로 돌아서는지, 시스템은 즉시 알려줍니다.
+      </p>
+      <div style="text-align:center; padding:4px 0 2px;">
+        <a href="https://promr.co.kr" class="cta-button" target="_blank">프로엠알 상담 신청 &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Quote -->
+  <div class="section">
+    <div class="quote-box">
+      <span class="quote-mark">&ldquo;</span>
+      기준이 공개됐다는 것은<br>
+      준비할 목록이 공개됐다는 뜻입니다.<br>
+      준비된 CSO에게 점검 기준은 채점표입니다.
+      <br><span style="font-style:normal; font-size:12px; color:#8899bb; margin-top:6px; display:block;">— CSO 위클리 인사이트, Vol.007</span>
+    </div>
+    <p style="font-size:13.5px; color:#555; text-align:center; line-height:1.8; margin:0;">
+      무더위 속에서도 현장을 지키는 CSO·제약 영업 실무자 여러분을 응원합니다.<br>
+      다루었으면 하는 주제나 피드백은 언제든 회신해 주세요.
+    </p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-logo">CSO Weekly Insight &nbsp;by&nbsp; <a href="https://promr.co.kr" target="_blank">ProMR</a></div>
+    <p>프로엠알(ProMR) &nbsp;|&nbsp; 제약·CSO MR 관리 플랫폼</p>
+    <div class="footer-links">
+      <a href="https://promr.co.kr" target="_blank">웹사이트</a>
+      <a href="tel:02-6952-0924">전화 02-6952-0924</a>
+      <a href="mailto:ai@promr.co.kr">ai@promr.co.kr</a>
+      <a href="https://www.linkedin.com/in/promrceo/" target="_blank">LinkedIn</a>
+    </div>
+    <p class="footer-copy">
+      본 뉴스레터는 정보 제공 목적으로 제작되었으며, 법률·투자 자문이 아닙니다.<br>
+      &copy; 2026 ProMR. All rights reserved.
+    </p>
+  </div>
+
+</div>
+</body>
+</html>

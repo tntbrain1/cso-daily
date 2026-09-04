@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSO Weekly Insight Vol.001 — 프로엠알</title>
+<style>
+  /* ── 기본 리셋 ── */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 20px 0;
+    background-color: #eef0f5;
+    font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── 래퍼 ── */
+  .email-wrapper {
+    max-width: 640px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  }
+
+  /* ── 헤더 ── */
+  .header {
+    background: linear-gradient(140deg, #0e1e4a 0%, #1a2b5f 40%, #2d4a9e 100%);
+    padding: 44px 36px 36px;
+    text-align: center;
+    position: relative;
+  }
+  .header-eyebrow {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    color: #a8c0ff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+  }
+  .header .subtitle {
+    color: #8aaee8;
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0 0 20px 0;
+    letter-spacing: -0.2px;
+  }
+  .header .edition {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+
+  /* ── 구분선 ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #dee2ee, transparent);
+    margin: 0;
+  }
+
+  /* ── 섹션 공통 ── */
+  .section { padding: 32px 36px; }
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #eef2ff;
+    color: #1a2b5f;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0e1e4a;
+    margin: 0 0 18px 0;
+    line-height: 1.55;
+    letter-spacing: -0.4px;
+  }
+  .section p {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.85;
+    margin: 0 0 12px 0;
+  }
+
+  /* ── 인트로 섹션 ── */
+  .intro-section {
+    padding: 28px 36px 24px;
+    background: #fafbff;
+    border-bottom: 1px solid #dee2ee;
+  }
+  .intro-avatar-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .intro-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a2b5f, #2d4a9e);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 18px;
+    flex-shrink: 0;
+  }
+  .intro-name { font-size: 13px; font-weight: 700; color: #1a2b5f; }
+  .intro-title { font-size: 11px; color: #888; margin-top: 2px; }
+  .intro-body { font-size: 14px; color: #333; line-height: 1.85; }
+
+  /* ── 메인 이슈 섹션 ── */
+  .main-issue-section { padding: 32px 36px; background: #f9faff; }
+  .main-issue-card {
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #dee2ee;
+    border-left: 4px solid #1a2b5f;
+    padding: 24px 24px 20px;
+    margin-top: 14px;
+  }
+  .main-issue-card h3 {
+    font-size: 17px; font-weight: 700; color: #0e1e4a;
+    margin: 0 0 16px 0; line-height: 1.55; letter-spacing: -0.3px;
+  }
+  .issue-sub {
+    font-size: 11px; font-weight: 800; color: #2d4a9e;
+    letter-spacing: 1px; text-transform: uppercase;
+    margin: 16px 0 6px 0;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .issue-sub::before {
+    content: '';
+    display: inline-block; width: 3px; height: 12px;
+    background: #2d4a9e; border-radius: 2px;
+  }
+  .main-issue-card p {
+    font-size: 13.5px; color: #444; line-height: 1.85; margin: 0 0 4px 0;
+  }
+  .implication-box {
+    background: #eef2ff;
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-top: 16px;
+  }
+  .implication-box p {
+    font-size: 13px; color: #2d3a6b; margin: 0; line-height: 1.75;
+  }
+
+  /* ── article-card ── */
+  .article-card {
+    background: #f8f9fc;
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+    border-left: 3px solid #2d4a9e;
+    transition: box-shadow 0.2s;
+  }
+  .article-card:hover { box-shadow: 0 4px 16px rgba(45,74,158,0.10); }
+  .article-card h3 {
+    font-size: 15px; font-weight: 700; color: #0e1e4a;
+    margin: 0 0 10px 0; line-height: 1.55; letter-spacing: -0.2px;
+  }
+  .article-card p {
+    font-size: 13px; color: #555; margin: 0 0 10px 0; line-height: 1.8;
+  }
+  .article-card .meta { font-size: 11px; color: #999; margin-top: 4px; }
+  .tag {
+    display: inline-block;
+    background: #e8edf8;
+    color: #2d4a9e;
+    font-size: 10px; font-weight: 700;
+    padding: 3px 8px; border-radius: 3px; margin-right: 4px; margin-top: 4px;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── article-link ── */
+  .article-link {
+    display: inline-block;
+    background: #fff;
+    border: 1.5px solid #2d4a9e;
+    color: #2d4a9e;
+    text-decoration: none;
+    padding: 7px 18px;
+    border-radius: 6px;
+    font-size: 12px; font-weight: 700;
+    margin-top: 12px;
+    transition: background 0.2s, color 0.2s;
+    letter-spacing: 0.2px;
+  }
+  .article-link:hover { background: #2d4a9e; color: #fff; }
+
+  /* ── 용어 해설 박스 ── */
+  .term-box {
+    background: #fff8e6;
+    border-radius: 7px;
+    border-left: 3px solid #f5a623;
+    padding: 13px 16px;
+    margin: 12px 0;
+  }
+  .term-box .term-title {
+    font-size: 11px; font-weight: 800; color: #8a5c00;
+    letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 5px;
+  }
+  .term-box p { font-size: 12.5px; color: #6b4c00; line-height: 1.75; margin: 0; }
+
+  /* ── tip-box ── */
+  .tip-box {
+    background: #fff8e1;
+    border-radius: 9px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    border-left: 3px solid #f5a623;
+  }
+  .tip-box h3 { font-size: 14px; font-weight: 700; color: #7a5d00; margin: 0 0 8px 0; }
+  .tip-box p { font-size: 13px; color: #6b5a1f; margin: 0; line-height: 1.8; }
+
+  /* ── stat-row ── */
+  .stat-row { display: flex; gap: 12px; margin-bottom: 16px; }
+  .stat-card {
+    flex: 1; background: #f8f9fc;
+    border-radius: 10px; padding: 20px 14px; text-align: center;
+    border-top: 3px solid #2d4a9e;
+  }
+  .stat-card .number {
+    font-size: 28px; font-weight: 900;
+    color: #1a2b5f; letter-spacing: -1px; line-height: 1;
+  }
+  .stat-card .unit { font-size: 14px; font-weight: 700; color: #2d4a9e; }
+  .stat-card .label { font-size: 11px; color: #888; margin-top: 6px; line-height: 1.5; }
+  .stat-note { font-size: 11px; color: #aaa; text-align: center; margin: 0; }
+
+  /* ── promr-box ── */
+  .promr-box {
+    background: linear-gradient(135deg, #f0faf0 0%, #e8f5e9 100%);
+    border-radius: 10px;
+    padding: 22px 24px;
+    margin-bottom: 14px;
+    border-left: 3px solid #2e7d32;
+  }
+  .promr-box h3 { font-size: 16px; font-weight: 700; color: #1b5e20; margin: 0 0 10px 0; line-height: 1.5; letter-spacing: -0.3px; }
+  .promr-box p { font-size: 13.5px; color: #2e5c2e; margin: 0 0 16px 0; line-height: 1.85; }
+
+  /* ── CTA 버튼 ── */
+  .cta-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #1a2b5f 0%, #2d4a9e 100%);
+    color: #fff;
+    text-decoration: none;
+    padding: 13px 30px;
+    border-radius: 8px;
+    font-size: 14px; font-weight: 700;
+    letter-spacing: 0.2px;
+    box-shadow: 0 4px 14px rgba(45,74,158,0.30);
+    transition: box-shadow 0.2s, transform 0.15s;
+  }
+  .cta-button:hover {
+    box-shadow: 0 6px 20px rgba(45,74,158,0.40);
+    transform: translateY(-1px);
+  }
+
+  /* ── quote-box ── */
+  .quote-box {
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8edff 100%);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 14px;
+    text-align: center;
+    font-style: italic;
+    color: #2a3060;
+    font-size: 15px;
+    line-height: 1.8;
+    letter-spacing: -0.2px;
+    border: 1px solid #d0d8f5;
+  }
+  .quote-box .quote-mark {
+    display: block; font-size: 36px; color: #2d4a9e;
+    opacity: 0.25; line-height: 1; margin-bottom: 6px;
+    font-style: normal;
+  }
+
+  /* ── 푸터 ── */
+  .footer {
+    background: #f2f3f8;
+    padding: 28px 36px;
+    text-align: center;
+    border-top: 1px solid #dee2ee;
+  }
+  .footer-logo {
+    font-size: 14px; font-weight: 800; color: #1a2b5f; margin-bottom: 4px;
+  }
+  .footer p { font-size: 11.5px; color: #888; margin: 4px 0; line-height: 1.7; }
+  .footer a { color: #2d4a9e; text-decoration: none; font-weight: 600; }
+  .footer a:hover { text-decoration: underline; }
+  .footer-links { margin: 12px 0 8px; }
+  .footer-links a {
+    font-size: 11px; color: #666; margin: 0 8px;
+    text-decoration: none; font-weight: 500;
+  }
+  .footer-links a:hover { color: #2d4a9e; }
+  .footer-copy { font-size: 10.5px; color: #bbb; margin-top: 10px; }
+
+  /* ── 섹션 아이콘 구분자 ── */
+  .section-icon-divider {
+    text-align: center;
+    padding: 6px 0;
+    color: #c8cfe8;
+    font-size: 18px;
+    background: #fff;
+  }
+
+  /* ── 모바일 반응형 ── */
+  @media (max-width: 640px) {
+    body { padding: 0; }
+    .email-wrapper { border-radius: 0; box-shadow: none; }
+    .header { padding: 32px 22px 28px; }
+    .header h1 { font-size: 22px; }
+    .section { padding: 24px 18px; }
+    .main-issue-section { padding: 24px 18px; }
+    .intro-section { padding: 20px 18px; }
+    .stat-row { flex-direction: column; }
+    .stat-card { padding: 16px 12px; }
+    .footer { padding: 20px 18px; }
+    .cta-button { padding: 11px 22px; font-size: 13px; }
+  }
+
+  /* ── 팝업 모달 ── */
+  .modal-overlay {
+    display: none; position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.65); z-index: 9999;
+    justify-content: center; align-items: center;
+    animation: fadeIn 0.25s ease;
+  }
+  .modal-overlay.active { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal-container {
+    width: 92%; max-width: 920px; height: 88vh;
+    background: #fff; border-radius: 14px; overflow: hidden;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.30);
+    display: flex; flex-direction: column;
+    animation: slideUp 0.3s ease;
+  }
+  .modal-topbar {
+    background: linear-gradient(135deg, #0e1e4a 0%, #2d4a9e 100%);
+    padding: 10px 18px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .modal-topbar-left { display: flex; align-items: center; gap: 10px; }
+  .modal-topbar-logo {
+    background: rgba(255,255,255,0.15); color: #fff;
+    font-size: 11px; font-weight: 800;
+    padding: 4px 10px; border-radius: 4px; letter-spacing: 1px;
+  }
+  .modal-topbar-title { color: #8aaee8; font-size: 12px; }
+  .modal-topbar-right { display: flex; align-items: center; gap: 8px; }
+  .modal-btn-back {
+    background: rgba(255,255,255,0.15); color: #fff;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 6px 14px; border-radius: 6px;
+    font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s;
+  }
+  .modal-btn-back:hover { background: rgba(255,255,255,0.28); }
+  .modal-btn-external {
+    background: none; color: #8aaee8; border: none;
+    font-size: 12px; cursor: pointer; text-decoration: underline; padding: 6px 8px;
+  }
+  .modal-btn-external:hover { color: #fff; }
+  .modal-btn-close {
+    background: none; border: none; color: rgba(255,255,255,0.7);
+    font-size: 22px; cursor: pointer; padding: 4px 8px;
+    line-height: 1; transition: color 0.2s;
+  }
+  .modal-btn-close:hover { color: #fff; }
+  .modal-iframe { flex: 1; border: none; width: 100%; background: #f4f4f7; }
+  .modal-bottombar {
+    background: #f0f4ff; padding: 10px 18px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 14px; border-top: 1px solid #dde3f5; flex-shrink: 0;
+  }
+  .modal-bottombar p { font-size: 12px; color: #555; margin: 0; }
+  .modal-bottombar .cta-small {
+    background: #2d4a9e; color: #fff;
+    padding: 7px 18px; border-radius: 6px;
+    font-size: 12px; font-weight: 700;
+    text-decoration: none; cursor: pointer; border: none;
+    transition: background 0.2s;
+  }
+  .modal-bottombar .cta-small:hover { background: #1a2b5f; }
+</style>
+</head>
+<body>
+<div class="email-wrapper">
+
+  <!-- ════════════════════════════════════
+       HEADER
+  ════════════════════════════════════ -->
+  <div class="header">
+    <div class="header-eyebrow">ProMR · CSO Intelligence</div>
+    <h1>CSO Weekly Insight</h1>
+    <p class="subtitle">프로엠알이 정리한 이번 주 CSO 업계 핵심</p>
+    <span class="edition">Vol. 001 &middot; 2026.04.18</span>
+  </div>
+
+  <!-- ════════════════════════════════════
+       인트로 — 발행인 인사
+  ════════════════════════════════════ -->
+  <div class="intro-section">
+    <div class="intro-avatar-row">
+      <div class="intro-avatar">K</div>
+      <div>
+        <div class="intro-name">김현준 (프로엠알 대표)</div>
+        <div class="intro-title">프로엠알 · CSO 위클리 인사이트 발행인</div>
+      </div>
+    </div>
+    <p class="intro-body">
+      안녕하세요, CSO 위클리 인사이트 창간호에 오신 것을 환영합니다.<br>
+      이번 호에서는 <strong>신풍제약의 의원급 CSO 전환 논란</strong>을 집중 조명하고, 보령·CMG제약·화이자 3개 사례를 통해 CSO 구조 전환의 명암을 살펴봅니다. 또한 <strong>2026년 말 지출보고서 첫 공개</strong>를 앞둔 컴플라이언스 준비 전략까지 담았습니다. 창간호인 만큼 현장에서 바로 써먹을 수 있는 인사이트에 집중했습니다. 함께 읽어주세요.
+    </p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ════════════════════════════════════
+       SECTION 1: 메인 이슈
+  ════════════════════════════════════ -->
+  <div class="main-issue-section">
+    <span class="section-label">01 &nbsp; 메인 이슈</span>
+    <h2>신풍제약 의원급 CSO 150명 전환 —<br>내부 공지 부재 논란과 업계 파장</h2>
+
+    <div class="main-issue-card">
+
+      <div class="issue-sub">사건 개요</div>
+      <p>
+        신풍제약은 2026년 4월 1일부로 의원급 영업조직 약 150명을 CSO 체제로 전환했습니다. 종합병원 담당 인력(50명)은 유지하되, 의원급 부문만 외부 아웃소싱으로 재편하는 구조입니다. 이 과정에서 CSO 업체에는 정식 공문이 발송됐으나 내부 직원들에게는 공식 공지가 이루어지지 않았다는 사실이 알려지며 고용 불안 논란이 불거졌습니다.
+      </p>
+
+      <div class="issue-sub">왜 주목해야 하는가</div>
+      <p>
+        이번 사례는 단순한 개별 기업의 조직 재편을 넘어, 복제약 약가인하 충격이 중소 제약사를 넘어 <strong>중견사 레벨까지 확산되고 있다</strong>는 신호로 읽힙니다. 메디칼타임즈·약사공론·시사저널e 등 업계 주요 매체가 동시에 보도했다는 점에서 업계 전반의 관심을 반영합니다.
+      </p>
+
+      <div class="issue-sub">업계 파장</div>
+      <p>
+        절차적 투명성 부재 논란은 향후 CSO 전환을 검토 중인 제약사들에게 '사전 공지 프로토콜'의 중요성을 다시금 환기시키고 있습니다. 동시에 의원급 CSO 시장에는 새로운 인력 유입 가능성이 생기면서, CSO 법인 간 품목 확보 경쟁이 더욱 치열해질 전망입니다.
+      </p>
+
+      <div class="implication-box">
+        <p>
+          <strong>CSO 법인 대표(C)에게:</strong> 제약사 전환 인력의 시장 유입이 단기적으로 가속화될 수 있습니다. 신규 딜러 온보딩 기준과 품목 포트폴리오 전략을 지금 점검해 두는 것이 유효합니다.<br><br>
+          <strong>제약사 영업본부장(B)에게:</strong> 이번 사례는 CSO 전환 시 내부 커뮤니케이션 실패가 브랜드 리스크로 이어질 수 있음을 보여줍니다. 전환 시 절차적 공정성 설계가 필수입니다.
+        </p>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <span class="tag">CSO전환</span>
+        <span class="tag">신풍제약</span>
+        <span class="tag">약가인하</span>
+        <span class="tag">중견제약</span>
+      </div>
+      <div class="meta" style="margin-top: 10px;">
+        출처: 약사공론 · 시사저널e · 메디칼타임즈
+      </div>
+      <a href="https://www.kpanews.co.kr/news/articleView.html?idxno=531334" class="article-link" onclick="openArticle('https://www.kpanews.co.kr/news/articleView.html?idxno=531334',event)">약사공론 원문 보기 &rarr;</a>
+      &nbsp;
+      <a href="https://www.sisajournal-e.com/news/articleView.html?idxno=419861" class="article-link" onclick="openArticle('https://www.sisajournal-e.com/news/articleView.html?idxno=419861',event)">시사저널e 원문 보기 &rarr;</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ════════════════════════════════════
+       SECTION 2: 이번 주 제약사 사례 3건
+  ════════════════════════════════════ -->
+  <div class="section">
+    <span class="section-label">02 &nbsp; 이번 주 제약사 사례</span>
+    <h2>주목할 CSO 사례 3선</h2>
+
+    <!-- 사례 1: 대형사 CSO 검토 확산 -->
+    <div class="article-card">
+      <h3>약가인하 칼바람에 대형사까지 CSO 검토 확산</h3>
+      <p>
+        약가 인하와 제네릭 경쟁 심화 속에 보령·종근당·신풍 등 중대형 제약사들이 영업 조직을 CSO 체제로 전환하거나 검토 중입니다. 단일 기업의 결정이 아니라 업계 전반의 구조 조정 흐름으로 번지고 있다는 점이 핵심입니다. 수익성 회복과 영업 효율의 균형을 어떻게 잡을지가 향후 관전 포인트입니다.
+      </p>
+      <span class="tag">대형사CSO</span>
+      <span class="tag">약가인하</span>
+      <span class="tag">구조전환</span>
+      <div class="meta" style="margin-top: 8px;">출처: 메디칼타임즈 · 2026.02.20</div>
+      <a href="https://www.medicaltimes.com/Users/News/NewsView.html?ID=1167365" class="article-link" onclick="openArticle('https://www.medicaltimes.com/Users/News/NewsView.html?ID=1167365',event)">원문 보기 &rarr;</a>
+    </div>
+
+    <!-- 사례 2: CMG제약 -->
+    <div class="article-card">
+      <h3>CMG제약, CSO 전환 첫 해 매출 +6%인데 영업이익 37억 적자 전환</h3>
+      <p>
+        CMG제약은 CSO 체제 전환 첫 해에 매출 1,052억 원(전년 대비 +6.1%)을 기록했지만, 영업이익은 10.2억 원 흑자에서 37억 원 적자로 돌아섰습니다. 단기 전환 비용과 CSO 수수료 부담이 수익성을 잠식한 대표 사례로 꼽힙니다. CSO 전환을 검토 중인 제약사 영업본부장이라면 '수수료 구조 설계'와 '손익분기 타임라인'을 반드시 사전에 모델링해야 한다는 교훈을 줍니다.
+      </p>
+      <span class="tag">CMG제약</span>
+      <span class="tag">수수료구조</span>
+      <span class="tag">전환비용</span>
+      <span class="tag">영업이익</span>
+      <div class="meta" style="margin-top: 8px;">출처: 메디칼타임즈</div>
+      <a href="https://www.medicaltimes.com/Main/News/NewsView.html?ID=1167823" class="article-link" onclick="openArticle('https://www.medicaltimes.com/Main/News/NewsView.html?ID=1167823',event)">원문 보기 &rarr;</a>
+    </div>
+
+    <!-- 사례 3: 화이자 (용어 해설 포함) -->
+    <div class="article-card">
+      <h3>[글로벌] 화이자, 스피커 프로그램 리베이트 혐의로 미국 정부에 6,000만 달러 합의</h3>
+
+      <div class="term-box">
+        <div class="term-title">용어 해설 &middot; 스피커 프로그램(Speaker Program)이란?</div>
+        <p>
+          제약사가 의사·약사를 연사(Speaker)로 초청해 자사 의약품 관련 강연을 의뢰하고 강연료를 지급하는 마케팅 활동입니다. 의학 교육 목적으로 허용되지만, 실질적 판촉 대가로 변질될 경우 <strong>리베이트로 간주</strong>될 수 있습니다. 국내의 '지출보고서 공개 제도'와 직결되는 규제 이슈입니다.
+        </p>
+      </div>
+
+      <p>
+        2025년 1월, 화이자는 미국 보건부 감사관실(OIG)과 스피커 프로그램 관련 리베이트 혐의로 <strong>6,000만 달러 합의</strong>를 체결했습니다. 이번 사례는 CSO를 통한 간접 판촉 활동에도 규제 레이더가 작동한다는 사실을 글로벌 스케일로 입증합니다. 국내에서도 2026년 말 지출보고서 첫 공개를 앞두고 CSO의 판촉 감독 의무가 강화되는 흐름과 정확히 맞닿아 있습니다.
+      </p>
+      <span class="tag">화이자</span>
+      <span class="tag">글로벌</span>
+      <span class="tag">스피커프로그램</span>
+      <span class="tag">규제리스크</span>
+      <div class="meta" style="margin-top: 8px;">출처: Contract Pharma / Mordor Intelligence</div>
+      <a href="https://www.contractpharma.com/big-pharmas-new-chapter-ma-metabolism-the-outsourcing-boom/" class="article-link" onclick="openArticle('https://www.contractpharma.com/big-pharmas-new-chapter-ma-metabolism-the-outsourcing-boom/',event)">원문 보기 &rarr;</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ════════════════════════════════════
+       SECTION 3: 업계 트렌드
+  ════════════════════════════════════ -->
+  <div class="section" style="background: #f9faff;">
+    <span class="section-label">03 &nbsp; 업계 트렌드</span>
+    <h2>지금 알아야 할 숫자와 흐름</h2>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="number">D<span class="unit" style="font-size:18px;">-</span>8개월</div>
+        <div class="label">지출보고서 첫 공개까지<br>2026년 말 카운트다운</div>
+      </div>
+      <div class="stat-card">
+        <div class="number">8.3<span class="unit">%</span></div>
+        <div class="label">글로벌 CSO 시장<br>연평균 성장률(CAGR)</div>
+      </div>
+      <div class="stat-card">
+        <div class="number">$116<span class="unit" style="font-size:14px;">억</span></div>
+        <div class="label">2026년 글로벌 CSO<br>시장 추정 규모</div>
+      </div>
+    </div>
+    <p class="stat-note">출처: Mordor Intelligence 2026 · 메디칼타임즈 · 데일리팜</p>
+
+    <div style="margin-top: 22px;">
+      <div class="tip-box">
+        <h3>지출보고서 공개제 2026년 말 본격 가동 — CSO도 예외 없다</h3>
+        <p>
+          CSO가 의약품 판촉 위탁을 맡은 경우 지출보고서 작성 의무가 2024년부터 부과됐습니다. 제약사·CSO가 6~7월 심평원에 데이터를 제출하면 연말에 공개됩니다. <strong>2026년 말이 첫 번째 대규모 공개 시점</strong>으로, 수수료·판촉비 투명성 압박이 본격화됩니다. 거짓 작성 시 형사 책임 규정도 포함돼 있어 지금부터 내부 데이터 정비가 필요합니다.
+        </p>
+      </div>
+
+      <div class="tip-box">
+        <h3>글로벌 CSO, 디지털 하이브리드 모델이 성장 엔진</h3>
+        <p>
+          하이브리드 옴니채널(디지털+대면) 방식이 연평균 <strong>8.6% CAGR</strong>로 가장 빠르게 성장 중입니다. 국내 CSO MR도 디지털 영업 채널 역량을 선제적으로 갖춰야 경쟁에서 뒤처지지 않을 것입니다.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ════════════════════════════════════
+       SECTION 4: 프로엠알 인사이트
+  ════════════════════════════════════ -->
+  <div class="section">
+    <span class="section-label">04 &nbsp; ProMR 인사이트</span>
+    <h2>지출보고서 공개 시대,<br>준비된 CSO와 준비 안 된 CSO의 차이</h2>
+
+    <div class="promr-box">
+      <h3>MR 활동 데이터 관리가 컴플라이언스 경쟁력이 됩니다</h3>
+      <p>
+        2026년 말 지출보고서 첫 공개 시즌을 앞두고, CSO 법인에게는 MR별 판촉 활동 기록과 증빙을 체계적으로 축적하는 인프라가 필수가 됐습니다. 거짓 작성 시 형사 처벌, 약가인하 연동 리스크까지 고려하면 지금 당장 활동 데이터 관리 체계를 점검해야 합니다.
+      </p>
+      <p>
+        프로엠알의 MR 관리 플랫폼은 CSO 법인이 지출보고서 데이터 산출 근거를 품목·거래처·MR 단위로 체계적으로 쌓을 수 있도록 설계되어 있습니다. 수기 관리의 누락 리스크를 줄이고, 심평원 제출 시점에 데이터가 이미 정비된 상태로 임할 수 있습니다.
+      </p>
+      <div style="text-align: center; padding: 4px 0 2px;">
+        <a href="https://promr.co.kr" class="cta-button" target="_blank">프로엠알 상담 신청 &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ════════════════════════════════════
+       SECTION 5: 클로징 quote-box
+  ════════════════════════════════════ -->
+  <div class="section">
+    <div class="quote-box">
+      <span class="quote-mark">&ldquo;</span>
+      규제의 빛이 강해질수록, 데이터로 준비된 CSO만이 신뢰받는 파트너가 됩니다.<br>
+      투명성은 부담이 아니라 지속 가능한 성장의 기반입니다.
+      <br><span style="font-style: normal; font-size: 12px; color: #8899bb; margin-top: 6px; display: block;">— CSO 위클리 인사이트, Vol.001</span>
+    </div>
+    <p style="font-size: 13.5px; color: #555; text-align: center; line-height: 1.8; margin: 0;">
+      이번 주도 현장에서 고군분투하는 CSO·제약 영업 실무자 여러분을 응원합니다.<br>
+      다루었으면 하는 주제나 피드백은 언제든 회신해 주세요.
+    </p>
+  </div>
+
+  <!-- ════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════ -->
+  <div class="footer">
+    <div class="footer-logo">CSO Weekly Insight &nbsp;by&nbsp; <a href="https://promr.co.kr" target="_blank">ProMR</a></div>
+    <p>프로엠알(ProMR) &nbsp;|&nbsp; 제약·CSO MR 관리 플랫폼</p>
+    <div class="footer-links">
+      <a href="https://promr.co.kr" target="_blank">웹사이트</a>
+      <a href="tel:02-6952-0924">전화 02-6952-0924</a>
+      <a href="mailto:ai@promr.co.kr">ai@promr.co.kr</a>
+      <a href="https://www.linkedin.com/in/promrceo/" target="_blank">LinkedIn</a>
+    </div>
+    <p class="footer-copy">
+      본 뉴스레터는 정보 제공 목적으로 제작되었으며, 법률·투자 자문이 아닙니다.<br>
+      &copy; 2026 ProMR. All rights reserved.
+    </p>
+  </div>
+
+</div><!-- /email-wrapper -->
+
+<!-- ════════════════════════════════════
+     기사 팝업 모달
+════════════════════════════════════ -->
+<div class="modal-overlay" id="articleModal">
+  <div class="modal-container">
+    <div class="modal-topbar">
+      <div class="modal-topbar-left">
+        <span class="modal-topbar-logo">ProMR</span>
+        <span class="modal-topbar-title">CSO 위클리 인사이트에서 제공하는 기사입니다</span>
+      </div>
+      <div class="modal-topbar-right">
+        <button class="modal-btn-back" onclick="closeModal()">&#8592; 뉴스레터로 돌아가기</button>
+        <button class="modal-btn-external" id="modalExternal" onclick="openExternal()">새 탭에서 열기</button>
+        <button class="modal-btn-close" onclick="closeModal()">&times;</button>
+      </div>
+    </div>
+    <iframe class="modal-iframe" id="modalIframe" src="about:blank"
+      sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+    <div class="modal-bottombar">
+      <p>제약·CSO 실무자를 위한 주간 인사이트 뉴스레터</p>
+      <button class="cta-small" onclick="closeModal()">뉴스레터 계속 읽기</button>
+      <a href="https://promr.co.kr" target="_blank" class="cta-small" style="background:#1b5e20;">ProMR 알아보기</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  var currentUrl = '';
+
+  function openArticle(url, e) {
+    if (e) e.preventDefault();
+    currentUrl = url;
+    document.getElementById('modalIframe').src = url;
+    document.getElementById('articleModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('articleModal').classList.remove('active');
+    document.getElementById('modalIframe').src = 'about:blank';
+    document.body.style.overflow = '';
+  }
+
+  function openExternal() {
+    if (currentUrl) window.open(currentUrl, '_blank');
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  document.getElementById('articleModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+</script>
+</body>
+</html>
