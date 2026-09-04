@@ -245,6 +245,58 @@ def update_company_archive(company_news: list[tuple[str, list[dict]]]) -> dict:
     return archive
 
 
+def backfill_from_google_news(archive: dict, recent_names: set) -> dict:
+    """아카이브에 없는 조용한 회사는 구글 뉴스 RSS로 최근 30일 마지막 기사 1건 검색"""
+    import urllib.parse
+    now_utc = datetime.datetime.now(datetime.timezone.utc)
+    cutoff = now_utc - datetime.timedelta(days=30)
+    targets = [c for c in CSO_PHARMA_COMPANIES if c not in recent_names and c not in archive]
+    if not targets:
+        return archive
+    print(f"  🔎 구글 뉴스로 {len(targets)}개사 마지막 기사 백필 중...")
+    for comp in targets:
+        q = urllib.parse.quote(f'"{comp}"')
+        url = f"https://news.google.com/rss/search?q={q}+when:30d&hl=ko&gl=KR&ceid=KR:ko"
+        raw = fetch_rss(url)
+        if not raw:
+            continue
+        try:
+            root = ET.fromstring(raw)
+        except ET.ParseError:
+            continue
+        best = None
+        for item in root.findall(".//item"):
+            t = item.find("title")
+            l = item.find("link")
+            p = item.find("pubDate")
+            s = item.find("source")
+            title = html.unescape((t.text or "").strip()) if t is not None else ""
+            if comp not in title:
+                continue
+            pub_dt = parse_date((p.text or "") if p is not None else "")
+            if pub_dt and pub_dt.tzinfo is None:
+                pub_dt = pub_dt.replace(tzinfo=datetime.timezone.utc)
+            if pub_dt and pub_dt < cutoff:
+                continue
+            # "제목 - 매체명" 꼬리 제거
+            title_clean = re.sub(r"\s+-\s+[^-]{2,20}$", "", title)
+            cand = {
+                "title": title_clean,
+                "url": (l.text or "").strip() if l is not None else "",
+                "source": (s.text or "").strip() if s is not None else "구글뉴스",
+                "pub": pub_dt.strftime("%Y-%m-%d %H:%M") if pub_dt else "날짜미상",
+                "_dt": pub_dt or cutoff,
+            }
+            if best is None or cand["_dt"] > best["_dt"]:
+                best = cand
+        if best:
+            best.pop("_dt", None)
+            archive[comp] = best
+    with open(ARCHIVE_PATH, "w", encoding="utf-8") as f:
+        json.dump(archive, f, ensure_ascii=False, indent=1)
+    return archive
+
+
 # ── Claude 요약·분류 ──────────────────────────────────────────────
 def fallback_articles(articles: list[dict]) -> list[dict]:
     """Claude 요약 실패 시 원본 제목·설명으로 카드 구성 (빈 페이지 방지)"""
@@ -953,6 +1005,7 @@ def main():
 
     company_news = get_company_news(raw)
     archive = update_company_archive(company_news)
+    archive = backfill_from_google_news(archive, {c for c, _ in company_news})
     with open(os.path.join(base, "companies.html"), "w", encoding="utf-8") as f:
         f.write(build_companies_html(company_news, archive))
 
