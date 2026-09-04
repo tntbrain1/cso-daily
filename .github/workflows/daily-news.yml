@@ -34,6 +34,14 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python generate_news.py
 
+      - name: 회사별 마지막 기사 아카이브 커밋
+        run: |
+          git config user.name "cso-daily-bot"
+          git config user.email "actions@github.com"
+          git add company_archive.json
+          git diff --cached --quiet || git commit -m "chore: 회사별 기사 아카이브 갱신 [skip ci]"
+          git push || true
+
       - name: GitHub Pages 업로드
         uses: actions/upload-pages-artifact@v3
         with:

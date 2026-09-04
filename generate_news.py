@@ -220,6 +220,31 @@ def get_company_news(raw: list[dict]) -> list[tuple[str, list[dict]]]:
     return result
 
 
+ARCHIVE_PATH = os.path.join(os.path.dirname(__file__), "company_archive.json")
+
+
+def update_company_archive(company_news: list[tuple[str, list[dict]]]) -> dict:
+    """회사별 마지막 기사를 누적 저장. 이번 주 기사가 있으면 갱신, 없으면 기존 유지."""
+    archive = {}
+    if os.path.exists(ARCHIVE_PATH):
+        try:
+            with open(ARCHIVE_PATH, encoding="utf-8") as f:
+                archive = json.load(f)
+        except (json.JSONDecodeError, OSError):
+            archive = {}
+    for comp, arts in company_news:
+        latest = arts[0]
+        archive[comp] = {
+            "title": latest["title"],
+            "url": latest["url"],
+            "source": latest["source"],
+            "pub": latest["pub"],
+        }
+    with open(ARCHIVE_PATH, "w", encoding="utf-8") as f:
+        json.dump(archive, f, ensure_ascii=False, indent=1)
+    return archive
+
+
 # ── Claude 요약·분류 ──────────────────────────────────────────────
 def fallback_articles(articles: list[dict]) -> list[dict]:
     """Claude 요약 실패 시 원본 제목·설명으로 카드 구성 (빈 페이지 방지)"""
@@ -422,9 +447,11 @@ def build_weekly_section(issues: list[dict]) -> str:
 """
 
 
-def build_companies_html(company_news: list[tuple[str, list[dict]]]) -> str:
+def build_companies_html(company_news: list[tuple[str, list[dict]]], archive: dict) -> str:
     now_kst = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=KST_OFFSET)))
     date_str = now_kst.strftime("%Y년 %m월 %d일")
+
+    recent_names = {comp for comp, _ in company_news}
 
     sections = []
     for comp, arts in company_news:
@@ -440,6 +467,28 @@ def build_companies_html(company_news: list[tuple[str, list[dict]]]) -> str:
             f'{items}</section>'
         )
     body = "\n".join(sections) if sections else "<p style='text-align:center;padding:60px;color:var(--text-muted)'>최근 7일간 해당 제약사 관련 기사가 없습니다.</p>"
+
+    # 최근 7일 소식 없는 회사 — 아카이브의 마지막 기사 or '기사 수집 이력 없음'
+    quiet_rows = []
+    for comp in CSO_PHARMA_COMPANIES:
+        if comp in recent_names:
+            continue
+        last = archive.get(comp)
+        if last:
+            quiet_rows.append(
+                f'<a href="{last["url"]}" target="_blank" rel="noopener" class="quiet-row" data-name="{html.escape(comp)}">'
+                f'<span class="quiet-name">{html.escape(comp)}</span>'
+                f'<span class="quiet-title">{html.escape(last["title"])}</span>'
+                f'<span class="quiet-meta">{html.escape(last["source"])} · {html.escape(last["pub"][:10])}</span></a>'
+            )
+        else:
+            quiet_rows.append(
+                f'<div class="quiet-row quiet-empty" data-name="{html.escape(comp)}">'
+                f'<span class="quiet-name">{html.escape(comp)}</span>'
+                f'<span class="quiet-title" style="color:var(--text-faint)">최근 수집된 기사 없음</span>'
+                f'<span class="quiet-meta">—</span></div>'
+            )
+    quiet_html = "\n".join(quiet_rows)
 
     return f"""<!DOCTYPE html>
 <html lang="ko">
@@ -492,7 +541,18 @@ a{{color:inherit;text-decoration:none}}
 .comp-item:hover{{background:var(--surface2)}}
 .comp-item-title{{font-size:13.5px;color:var(--text);line-height:1.55}}
 .comp-item-meta{{font-size:11px;color:var(--text-faint)}}
-@media(max-width:640px){{.main{{padding:20px 16px 60px}}.masthead-inner{{padding:18px 16px}}}}
+.quiet-section{{margin-top:40px}}
+.quiet-head{{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}}
+.quiet-label{{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint)}}
+.quiet-rule{{flex:1;height:1px;background:var(--border)}}
+.quiet-list{{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}}
+.quiet-row{{display:grid;grid-template-columns:130px 1fr auto;gap:14px;align-items:baseline;padding:11px 20px;border-top:1px solid var(--border);transition:background .15s}}
+.quiet-row:first-child{{border-top:none}}
+a.quiet-row:hover{{background:var(--surface2)}}
+.quiet-name{{font-size:13px;font-weight:600;color:var(--text)}}
+.quiet-title{{font-size:13px;color:var(--text-muted);line-height:1.5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+.quiet-meta{{font-size:11px;color:var(--text-faint);white-space:nowrap}}
+@media(max-width:640px){{.main{{padding:20px 16px 60px}}.masthead-inner{{padding:18px 16px}}.quiet-row{{grid-template-columns:1fr;gap:2px}}}}
 </style>
 </head>
 <body>
@@ -513,12 +573,22 @@ a{{color:inherit;text-decoration:none}}
   <div class="comp-grid" id="comp-grid">
     {body}
   </div>
+
+  <div class="quiet-section">
+    <div class="quiet-head">
+      <span class="quiet-label">최근 7일 소식 없는 회사 — 마지막 기사</span>
+      <div class="quiet-rule"></div>
+    </div>
+    <div class="quiet-list">
+      {quiet_html}
+    </div>
+  </div>
 </main>
 <script>
 function filterComps(q) {{
   q = q.trim();
-  document.querySelectorAll('.comp-card').forEach(c => {{
-    c.style.display = (!q || c.dataset.name.includes(q)) ? '' : 'none';
+  document.querySelectorAll('.comp-card, .quiet-row').forEach(c => {{
+    c.style.display = (!q || c.dataset.name.includes(q)) ? (c.classList.contains('quiet-row') ? 'grid' : '') : 'none';
   }});
 }}
 </script>
@@ -882,8 +952,9 @@ def main():
         f.write(build_html(articles))
 
     company_news = get_company_news(raw)
+    archive = update_company_archive(company_news)
     with open(os.path.join(base, "companies.html"), "w", encoding="utf-8") as f:
-        f.write(build_companies_html(company_news))
+        f.write(build_companies_html(company_news, archive))
 
     print(f"✅ 완료: index.html {len(articles)}건 / companies.html {len(company_news)}개 제약사")
     return out_path
