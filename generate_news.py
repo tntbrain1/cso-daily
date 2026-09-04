@@ -119,10 +119,14 @@ def parse_date(date_str: str) -> datetime.datetime | None:
     return None
 
 
-def get_articles() -> list[dict]:
+COMPANY_HOURS_BACK = 168   # 제약사별 뉴스는 최근 7일
+
+
+def collect_raw(hours: int) -> list[dict]:
+    """모든 피드에서 최근 N시간 기사를 키워드 필터 없이 수집"""
     now_utc = datetime.datetime.now(datetime.timezone.utc)
-    cutoff = now_utc - datetime.timedelta(hours=HOURS_BACK)
-    articles = []
+    cutoff = now_utc - datetime.timedelta(hours=hours)
+    entries = []
 
     for feed in RSS_FEEDS:
         print(f"  📡 {feed['name']} 피드 수집 중...")
@@ -162,19 +166,7 @@ def get_articles() -> list[dict]:
             else:
                 age_hours = 0  # 날짜 불명 기사는 포함
 
-            # CSO 관련 키워드 필터
-            combined = (title + " " + desc).lower()
-            is_relevant = any(kw.lower() in combined for kw in CSO_KEYWORDS)
-            if not is_relevant:
-                continue
-
-            # C레벨 임원 CSO(동음이의) 기사 제외: "CSO"만으로 매칭됐고 인사 관련 표현이 있으면 스킵
-            if "cso" in combined and any(fp in title for fp in CSO_FALSE_POSITIVE):
-                has_real_signal = any(s in combined for s in ["판촉영업자", "영업대행", "판매대행", "수수료", "위탁", "신고제"])
-                if not has_real_signal:
-                    continue
-
-            articles.append({
+            entries.append({
                 "source": feed["name"],
                 "title": title,
                 "url": link,
@@ -186,14 +178,47 @@ def get_articles() -> list[dict]:
     # 최신순 정렬, 중복 제거
     seen = set()
     unique = []
-    for a in sorted(articles, key=lambda x: x["age_hours"]):
+    for a in sorted(entries, key=lambda x: x["age_hours"]):
         key = a["title"][:40]
         if key not in seen:
             seen.add(key)
             unique.append(a)
+    print(f"  ✅ 전체 기사 {len(unique)}건 수집")
+    return unique
 
-    print(f"  ✅ 관련 기사 {len(unique)}건 수집 완료")
-    return unique[:MAX_ARTICLES]
+
+def get_articles(raw: list[dict]) -> list[dict]:
+    """데일리 브리핑용: 72시간 이내 + CSO 키워드 필터"""
+    articles = []
+    for a in raw:
+        if a["age_hours"] > HOURS_BACK:
+            continue
+        combined = (a["title"] + " " + a["desc"]).lower()
+        if not any(kw.lower() in combined for kw in CSO_KEYWORDS):
+            continue
+        # C레벨 임원 CSO(동음이의) 기사 제외
+        if "cso" in combined and any(fp in a["title"] for fp in CSO_FALSE_POSITIVE):
+            if not any(s in combined for s in ["판촉영업자", "영업대행", "판매대행", "수수료", "위탁", "신고제"]):
+                continue
+        articles.append(a)
+    print(f"  ✅ 관련 기사 {len(articles)}건 필터링")
+    return articles[:MAX_ARTICLES]
+
+
+def get_company_news(raw: list[dict]) -> list[tuple[str, list[dict]]]:
+    """제약사별 최신 뉴스 그룹핑 (기사 있는 회사만, 최신 기사순 정렬)"""
+    groups = {}
+    for a in raw:
+        text = a["title"] + " " + a["desc"]
+        for comp in CSO_PHARMA_COMPANIES:
+            if comp in text:
+                groups.setdefault(comp, []).append(a)
+    result = []
+    for comp, arts in groups.items():
+        arts = sorted(arts, key=lambda x: x["age_hours"])[:5]
+        result.append((comp, arts))
+    result.sort(key=lambda x: x[1][0]["age_hours"])
+    return result
 
 
 # ── Claude 요약·분류 ──────────────────────────────────────────────
@@ -396,6 +421,110 @@ def build_weekly_section(issues: list[dict]) -> str:
     </div>
   </div>
 """
+
+
+def build_companies_html(company_news: list[tuple[str, list[dict]]]) -> str:
+    now_kst = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=KST_OFFSET)))
+    date_str = now_kst.strftime("%Y년 %m월 %d일")
+
+    sections = []
+    for comp, arts in company_news:
+        items = "\n".join(
+            f'<a href="{a["url"]}" target="_blank" rel="noopener" class="comp-item">'
+            f'<span class="comp-item-title">{html.escape(a["title"])}</span>'
+            f'<span class="comp-item-meta">{html.escape(a["source"])} · {html.escape(a["pub"][:10])}</span></a>'
+            for a in arts
+        )
+        sections.append(
+            f'<section class="comp-card" data-name="{html.escape(comp)}">'
+            f'<h2 class="comp-name">{html.escape(comp)} <span class="comp-count">{len(arts)}건</span></h2>'
+            f'{items}</section>'
+        )
+    body = "\n".join(sections) if sections else "<p style='text-align:center;padding:60px;color:var(--text-muted)'>최근 7일간 해당 제약사 관련 기사가 없습니다.</p>"
+
+    return f"""<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>제약사별 뉴스 — CSO 데일리 브리핑</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600&display=swap">
+<style>
+:root {{
+  --bg:#EEF3F8;--surface:#FFFFFF;--surface2:#F5F9FC;--border:#D4E0EB;
+  --text:#0D1B2E;--text-muted:#4F6B82;--text-faint:#7A9BB5;
+  --accent:#0ABFBC;--accent-dark:#088F8D;--navy-mid:#1A3354;
+  --shadow:0 1px 4px rgba(13,27,46,.08),0 4px 16px rgba(13,27,46,.06);--radius:10px;
+}}
+@media(prefers-color-scheme:dark){{
+  :root:not([data-theme="light"]){{
+    --bg:#080F1A;--surface:#0D1B2E;--surface2:#121F30;--border:#1E3354;
+    --text:#E8F1F8;--text-muted:#7A9BB5;--text-faint:#3D5A72;
+    --accent:#0ADBD8;--accent-dark:#0ABFBC;--navy-mid:#1A3354;
+    --shadow:0 1px 4px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);
+  }}
+}}
+:root[data-theme="dark"]{{
+  --bg:#080F1A;--surface:#0D1B2E;--surface2:#121F30;--border:#1E3354;
+  --text:#E8F1F8;--text-muted:#7A9BB5;--text-faint:#3D5A72;
+  --accent:#0ADBD8;--accent-dark:#0ABFBC;--navy-mid:#1A3354;
+  --shadow:0 1px 4px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);
+}}
+*,*::before,*::after{{box-sizing:border-box;margin:0;padding:0}}
+body{{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.7}}
+a{{color:inherit;text-decoration:none}}
+.masthead{{background:var(--navy-mid);color:#fff}}
+.masthead-inner{{max-width:1100px;margin:0 auto;padding:24px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}}
+.brand-title{{font-family:'Noto Serif KR',serif;font-size:clamp(20px,3vw,28px);font-weight:700}}
+.brand-sub{{font-size:12px;color:rgba(255,255,255,.55);margin-top:2px}}
+.back-link{{font-size:13px;font-weight:500;color:#0ADBD8;border:1px solid rgba(10,219,216,.35);border-radius:6px;padding:8px 16px;transition:background .2s}}
+.back-link:hover{{background:rgba(10,219,216,.15)}}
+.main{{max-width:1100px;margin:0 auto;padding:28px 32px 80px}}
+.search-row{{margin-bottom:24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}}
+.search-input{{flex:1;min-width:220px;font-family:inherit;font-size:14px;padding:12px 16px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);outline:none}}
+.search-input:focus{{border-color:var(--accent)}}
+.search-hint{{font-size:12px;color:var(--text-faint)}}
+.comp-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px;align-items:start}}
+.comp-card{{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}}
+.comp-name{{font-family:'Noto Serif KR',serif;font-size:16px;font-weight:700;padding:16px 20px 12px;display:flex;align-items:baseline;gap:8px}}
+.comp-count{{font-size:11px;font-weight:500;color:var(--accent)}}
+.comp-item{{display:flex;flex-direction:column;gap:3px;padding:12px 20px;border-top:1px solid var(--border);transition:background .15s}}
+.comp-item:hover{{background:var(--surface2)}}
+.comp-item-title{{font-size:13.5px;color:var(--text);line-height:1.55}}
+.comp-item-meta{{font-size:11px;color:var(--text-faint)}}
+@media(max-width:640px){{.main{{padding:20px 16px 60px}}.masthead-inner{{padding:18px 16px}}}}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-inner">
+    <div>
+      <h1 class="brand-title">제약사별 뉴스</h1>
+      <p class="brand-sub">CSO 활용 제약사 최근 7일 소식 · {date_str} 기준</p>
+    </div>
+    <a href="index.html" class="back-link">← 데일리 브리핑</a>
+  </div>
+</header>
+<main class="main">
+  <div class="search-row">
+    <input type="text" class="search-input" id="comp-search" placeholder="제약사 이름 검색 (예: 신풍제약)" oninput="filterComps(this.value)">
+    <span class="search-hint">기사 있는 제약사 {len(company_news)}곳</span>
+  </div>
+  <div class="comp-grid" id="comp-grid">
+    {body}
+  </div>
+</main>
+<script>
+function filterComps(q) {{
+  q = q.trim();
+  document.querySelectorAll('.comp-card').forEach(c => {{
+    c.style.display = (!q || c.dataset.name.includes(q)) ? '' : 'none';
+  }});
+}}
+</script>
+</body>
+</html>"""
 
 
 def build_html(articles: list[dict]) -> str:
@@ -649,6 +778,7 @@ a{{color:inherit;text-decoration:none}}
     <button class="cat-btn" onclick="filterCards('market',this)">시장동향</button>
     <button class="cat-btn" onclick="filterCards('company',this)">제약사소식</button>
     <button class="cat-btn" onclick="filterCards('cso',this)">CSO산업</button>
+    <a class="cat-btn" href="companies.html" style="margin-left:auto;color:var(--accent);font-weight:600">제약사별 뉴스 →</a>
   </div>
 </nav>
 
@@ -735,7 +865,8 @@ def main():
         raise RuntimeError("ANTHROPIC_API_KEY 환경변수가 설정되지 않았습니다.")
 
     print("🔍 RSS 피드 수집 중...")
-    raw_articles = get_articles()
+    raw = collect_raw(COMPANY_HOURS_BACK)
+    raw_articles = get_articles(raw)
 
     if not raw_articles:
         print("⚠️ 관련 기사 없음 — 빈 페이지 생성")
@@ -745,13 +876,17 @@ def main():
         articles = summarize_with_claude(raw_articles)
 
     print("🏗️  HTML 생성 중...")
-    html_content = build_html(articles)
+    base = os.path.dirname(__file__)
 
-    out_path = os.path.join(os.path.dirname(__file__), "index.html")
+    out_path = os.path.join(base, "index.html")
     with open(out_path, "w", encoding="utf-8") as f:
-        f.write(html_content)
+        f.write(build_html(articles))
 
-    print(f"✅ 완료: {out_path} ({len(articles)}건 기사)")
+    company_news = get_company_news(raw)
+    with open(os.path.join(base, "companies.html"), "w", encoding="utf-8") as f:
+        f.write(build_companies_html(company_news))
+
+    print(f"✅ 완료: index.html {len(articles)}건 / companies.html {len(company_news)}개 제약사")
     return out_path
 
 

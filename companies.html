@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>제약사별 뉴스 — CSO 데일리 브리핑</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600&display=swap">
+<style>
+:root {
+  --bg:#EEF3F8;--surface:#FFFFFF;--surface2:#F5F9FC;--border:#D4E0EB;
+  --text:#0D1B2E;--text-muted:#4F6B82;--text-faint:#7A9BB5;
+  --accent:#0ABFBC;--accent-dark:#088F8D;--navy-mid:#1A3354;
+  --shadow:0 1px 4px rgba(13,27,46,.08),0 4px 16px rgba(13,27,46,.06);--radius:10px;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#080F1A;--surface:#0D1B2E;--surface2:#121F30;--border:#1E3354;
+    --text:#E8F1F8;--text-muted:#7A9BB5;--text-faint:#3D5A72;
+    --accent:#0ADBD8;--accent-dark:#0ABFBC;--navy-mid:#1A3354;
+    --shadow:0 1px 4px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#080F1A;--surface:#0D1B2E;--surface2:#121F30;--border:#1E3354;
+  --text:#E8F1F8;--text-muted:#7A9BB5;--text-faint:#3D5A72;
+  --accent:#0ADBD8;--accent-dark:#0ABFBC;--navy-mid:#1A3354;
+  --shadow:0 1px 4px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
+a{color:inherit;text-decoration:none}
+.masthead{background:var(--navy-mid);color:#fff}
+.masthead-inner{max-width:1100px;margin:0 auto;padding:24px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.brand-title{font-family:'Noto Serif KR',serif;font-size:clamp(20px,3vw,28px);font-weight:700}
+.brand-sub{font-size:12px;color:rgba(255,255,255,.55);margin-top:2px}
+.back-link{font-size:13px;font-weight:500;color:#0ADBD8;border:1px solid rgba(10,219,216,.35);border-radius:6px;padding:8px 16px;transition:background .2s}
+.back-link:hover{background:rgba(10,219,216,.15)}
+.main{max-width:1100px;margin:0 auto;padding:28px 32px 80px}
+.search-row{margin-bottom:24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.search-input{flex:1;min-width:220px;font-family:inherit;font-size:14px;padding:12px 16px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);outline:none}
+.search-input:focus{border-color:var(--accent)}
+.search-hint{font-size:12px;color:var(--text-faint)}
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px;align-items:start}
+.comp-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.comp-name{font-family:'Noto Serif KR',serif;font-size:16px;font-weight:700;padding:16px 20px 12px;display:flex;align-items:baseline;gap:8px}
+.comp-count{font-size:11px;font-weight:500;color:var(--accent)}
+.comp-item{display:flex;flex-direction:column;gap:3px;padding:12px 20px;border-top:1px solid var(--border);transition:background .15s}
+.comp-item:hover{background:var(--surface2)}
+.comp-item-title{font-size:13.5px;color:var(--text);line-height:1.55}
+.comp-item-meta{font-size:11px;color:var(--text-faint)}
+@media(max-width:640px){.main{padding:20px 16px 60px}.masthead-inner{padding:18px 16px}}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-inner">
+    <div>
+      <h1 class="brand-title">제약사별 뉴스</h1>
+      <p class="brand-sub">CSO 활용 제약사 최근 7일 소식 · 2026년 09월 04일 기준</p>
+    </div>
+    <a href="index.html" class="back-link">← 데일리 브리핑</a>
+  </div>
+</header>
+<main class="main">
+  <div class="search-row">
+    <input type="text" class="search-input" id="comp-search" placeholder="제약사 이름 검색 (예: 신풍제약)" oninput="filterComps(this.value)">
+    <span class="search-hint">기사 있는 제약사 32곳</span>
+  </div>
+  <div class="comp-grid" id="comp-grid">
+    <section class="comp-card" data-name="대화제약"><h2 class="comp-name">대화제약 <span class="comp-count">3건</span></h2><a href="https://www.medicopharma.co.kr/news/articleView.html?idxno=69418" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">대화제약 ‘리포락셀’ 中 유방암 허가심사 재개…CDE 대기열 재진입</span><span class="comp-item-meta">메디코파마 · 2026-09-04</span></a>
+<a href="https://www.pharmnews.com/news/articleView.html?idxno=306017" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">국가임상시험지원재단, 대웅제약 등 11개사와 &#x27;한-인니 임상개발 협력사업&#x27; 추진</span><span class="comp-item-meta">팜뉴스 · 2026-09-03</span></a>
+<a href="https://www.hitnews.co.kr/news/articleView.html?idxno=78866" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">임상시험지원재단, 대웅제약·대화제약 등 인도네시아 진출 지원</span><span class="comp-item-meta">히트뉴스 · 2026-09-03</span></a></section>
+<section class="comp-card" data-name="마더스제약"><h2 class="comp-name">마더스제약 <span class="comp-count">1건</span></h2><a href="https://www.hitnews.co.kr/news/articleView.html?idxno=78900" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">마더스 승소 판결 항소심 &#x27;재평가절차와 조정사유 합리성&#x27; 따졌다</span><span class="comp-item-meta">히트뉴스 · 2026-09-04</span></a></section>
+<section class="comp-card" data-name="삼익제약"><h2 class="comp-name">삼익제약 <span class="comp-count">1건</span></h2><a href="https://www.hitnews.co.kr/news/articleView.html?idxno=78919" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">삼익제약, 골프공 모양 &#x27;딤플형 생분해성 미립구&#x27; 제조 기술 특허 등록</span><span class="comp-item-meta">히트뉴스 · 2026-09-04</span></a></section>
+<section class="comp-card" data-name="녹십자"><h2 class="comp-name">녹십자 <span class="comp-count">5건</span></h2><a href="https://www.medicopharma.co.kr/news/articleView.html?idxno=69416" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">GC녹십자웰빙, 필리핀 의료미용 시장 공략…‘지셀르 리본느’ 출시</span><span class="comp-item-meta">메디코파마 · 2026-09-04</span></a>
+<a href="https://www.pharmnews.com/news/articleView.html?idxno=306067" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">GC녹십자, 고면역원성 독감백신 &#x27;GC3114B&#x27; 임상 2/3상 IND 승인</span><span class="comp-item-meta">팜뉴스 · 2026-09-04</span></a>
+<a href="http://www.docdocdoc.co.kr/news/articleView.html?idxno=3042451" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">GC녹십자, 고면역원성 독감백신 임상 2/3상 IND 승인</span><span class="comp-item-meta">청년의사 · 2026-09-04</span></a>
+<a href="https://www.hitnews.co.kr/news/articleView.html?idxno=78909" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">GC녹십자 고면역원성 독감백신 &#x27;GC3114B&#x27; 2/3상 IND 승인</span><span class="comp-item-meta">히트뉴스 · 2026-09-04</span></a>
+<a href="https://www.medicopharma.co.kr/news/articleView.html?idxno=69411" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">GC녹십자, 고면역원성 독감백신 개발 속도…2/3상 IND 승인</span><span class="comp-item-meta">메디코파마 · 2026-09-04</span></a></section>
+<section class="comp-card" data-name="한미약품"><h2 class="comp-name">한미약품 <span class="comp-count">4건</span></h2><a href="http://www.docdocdoc.co.kr/news/articleView.html?idxno=3042454" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">한미약품, &#x27;에페거글루카곤&#x27; 2상 환자 특성 ESPE서 공개</span><span class="comp-item-meta">청년의사 · 2026-09-04</span></a>
+<a href="https://www.pharmnews.com/news/articleView.html?idxno=306070" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">한미약품, 유럽소아내분비학회서 &#x27;에페거글루카곤&#x27; 2상 구연 발표</span><span class="comp-item-meta">팜뉴스 · 2026-09-04</span></a>
+<a href="https://www.hitnews.co.kr/news/articleView.html?idxno=78918" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">로수젯 ODT, 별도 급여기준 설정해 등재 예상</span><span class="comp-item-meta">히트뉴스 · 2026-09-04</span></a>
+<a href="https://www.monews.co.kr/news/articleView.html?idxno=413642" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">한미, 팔팔·구구 잇는 &#x27;차세대 발기부전약&#x27; 시동</span><span class="comp-item-meta">메디칼업저버 · 2026-09-03</span></a></section>
+<section class="comp-card" data-name="JW중외제약"><h2 class="comp-name">JW중외제약 <span class="comp-count">1건</span></h2><a href="https://www.pharmnews.com/news/articleView.html?idxno=306071" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">JW중외제약, 콜레스테롤의 날 맞아 사내 &#x27;당부, 스타틴&#x27; 캠페인 전개</span><span class="comp-item-meta">팜뉴스 · 2026-09-04</span></a></section>
+<section class="comp-card" data-name="한독"><h2 class="comp-name">한독 <span class="comp-count">3건</span></h2><a href="https://www.pharmnews.com/news/articleView.html?idxno=306069" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">한독, KSMO 2026서 담관암 표적치료제 &#x27;페마자이레&#x27; 심포지엄 개최</span><span class="comp-item-meta">팜뉴스 · 2026-09-04</span></a>
+<a href="https://www.monews.co.kr/news/articleView.html?idxno=413665" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">중증근무력증·DLBCL·다발골수종 신약 급여 &#x27;청신호&#x27;</span><span class="comp-item-meta">메디칼업저버 · 2026-09-04</span></a>
+<a href="https://www.pharmnews.com/news/articleView.html?idxno=306050" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">중증근무력증·다발골수종 신약 급여 문턱 넘었다</span><span class="comp-item-meta">팜뉴스 · 2026-09-03</span></a></section>
+<section class="comp-card" data-name="대원제약"><h2 class="comp-name">대원제약 <span class="comp-count">3건</span></h2><a href="https://www.pharmnews.com/news/articleView.html?idxno=306066" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">대원제약, 먹고 바르는 &#x27;슈퍼셀 PDRN 듀얼 패키지&#x27; 출시</span><span class="comp-item-meta">팜뉴스 · 2026-09-04</span></a>
+<a href="https://www.hitnews.co.kr/news/articleView.html?idxno=78893" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">[경력채용] 대원제약, 삼일제약, 보령바이오파마, 한풍제약, 클래시스</span><span class="comp-item-meta">히트뉴스 · 2026-09-04</span></a>
+<a href="https://www.monews.co.kr/news/articleView.html?idxno=413518" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">P-CAB, 블루오션에서 &#x27;레드오션&#x27;으로···신약 경쟁 격화</span><span class="comp-item-meta">메디칼업저버 · 2026-09-03</span></a></section>
+<section class="comp-card" data-name="안국약품"><h2 class="comp-name">안국약품 <span class="comp-count">4건</span></h2><a href="https://www.pharmnews.com/news/articleView.html?idxno=306063" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">안국약품, 창립 67주년 기념식 개최...영업 환경 악화 속 제조 품질 고도화</span><span class="comp-item-meta">팜뉴스 · 2026-09-04</span></a>
+<a href="https://www.pharmnews.com/news/articleView.html?idxno=306062" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">안국약품 2026년 9월 임원 승진 인사</span><span class="comp-item-meta">팜뉴스 · 2026-09-04</span></a>
+<a href="https://www.hitnews.co.kr/news/articleView.html?idxno=78910" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">안국약품, 창립 67주년…5년간 1299억 투자 계획 발표</span><span class="comp-item-meta">히트뉴스 · 2026-09-04</span></a>
+<a href="https://www.medicopharma.co.kr/news/articleView.html?idxno=69412" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">안국약품, 생산시설 확대에 1299억 투입…‘2030 New Vision’ 제시</span><span class="comp-item-meta">메디코파마 · 2026-09-04</span></a></section>
+<section class="comp-card" data-name="대웅제약"><h2 class="comp-name">대웅제약 <span class="comp-count">5건</span></h2><a href="https://www.pharmnews.com/news/articleView.html?idxno=306060" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">부산백병원, 대웅제약 &#x27;씽크&#x27; 기반 스마트병동 확대 및 상설전시관 개관</span><span class="comp-item-meta">팜뉴스 · 2026-09-04</span></a>
+<a href="https://www.hitnews.co.kr/news/articleView.html?idxno=78908" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">대웅제약, 부산백병원에 &#x27;씽크&#x27; 활용 스마트병동 상설전시관 마련</span><span class="comp-item-meta">히트뉴스 · 2026-09-04</span></a>
+<a href="https://www.hitnews.co.kr/news/articleView.html?idxno=78901" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">균주소송 2R 메디톡스는 왜, 대웅에 소송가액 &#x27;5천억&#x27;으로 올렸나</span><span class="comp-item-meta">히트뉴스 · 2026-09-04</span></a>
+<a href="https://www.monews.co.kr/news/articleView.html?idxno=413653" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">메디톡스vs 대웅 &#x27;보톡스 전쟁&#x27; 2라운드···손배액 10배 증액</span><span class="comp-item-meta">메디칼업저버 · 2026-09-03</span></a>
+<a href="http://www.docdocdoc.co.kr/news/articleView.html?idxno=3042420" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">인도네시아 식약청 대표단, 대웅제약 마곡연구소 방문</span><span class="comp-item-meta">청년의사 · 2026-09-03</span></a></section>
+<section class="comp-card" data-name="현대약품"><h2 class="comp-name">현대약품 <span class="comp-count">1건</span></h2><a href="https://www.pharmnews.com/news/articleView.html?idxno=306058" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">현대약품, &#x27;제25회 ESG 대학생 마케터&#x27; 수료식 진행</span><span class="comp-item-meta">팜뉴스 · 2026-09-04</span></a></section>
+<section class="comp-card" data-name="위더스제약"><h2 class="comp-name">위더스제약 <span class="comp-count">2건</span></h2><a href="https://www.medicopharma.co.kr/news/articleView.html?idxno=69403" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">위더스제약 성대영, 직접 경영하는 &#x27;한도병원&#x27; 특수관계로 편입</span><span class="comp-item-meta">메디코파마 · 2026-09-04</span></a>
+<a href="https://www.medicopharma.co.kr/news/articleView.html?idxno=69384" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">위더스제약, 개량신약 성과 엇갈려…고혈압 출시·당뇨 두 차례 중단</span><span class="comp-item-meta">메디코파마 · 2026-09-03</span></a></section>
+<section class="comp-card" data-name="신풍제약"><h2 class="comp-name">신풍제약 <span class="comp-count">1건</span></h2><a href="https://www.medicopharma.co.kr/news/articleView.html?idxno=69404" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">신풍제약, CSO 전환 비용 2분기 집중…지급수수료 10배 급증</span><span class="comp-item-meta">메디코파마 · 2026-09-04</span></a></section>
+<section class="comp-card" data-name="광동제약"><h2 class="comp-name">광동제약 <span class="comp-count">1건</span></h2><a href="https://www.medicopharma.co.kr/news/articleView.html?idxno=69405" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">광동제약, MRO 사업 베트남 진출…비제약 해외 확장 본격화</span><span class="comp-item-meta">메디코파마 · 2026-09-04</span></a></section>
+<section class="comp-card" data-name="글로벌제약"><h2 class="comp-name">글로벌제약 <span class="comp-count">3건</span></h2><a href="https://www.hitnews.co.kr/news/articleView.html?idxno=78897" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">신약 접근성 요구하는 글로벌제약…&quot;한국 기여 보여줘야&quot;</span><span class="comp-item-meta">히트뉴스 · 2026-09-04</span></a>
+<a href="https://www.hitnews.co.kr/news/articleView.html?idxno=78872" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">약가개편 실행의 시간... 정부·글로벌제약 &quot;성공사례 중요&quot;</span><span class="comp-item-meta">히트뉴스 · 2026-09-03</span></a>
+<a href="https://www.monews.co.kr/news/articleView.html?idxno=413518" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">P-CAB, 블루오션에서 &#x27;레드오션&#x27;으로···신약 경쟁 격화</span><span class="comp-item-meta">메디칼업저버 · 2026-09-03</span></a></section>
+<section class="comp-card" data-name="삼일제약"><h2 class="comp-name">삼일제약 <span class="comp-count">1건</span></h2><a href="https://www.hitnews.co.kr/news/articleView.html?idxno=78893" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">[경력채용] 대원제약, 삼일제약, 보령바이오파마, 한풍제약, 클래시스</span><span class="comp-item-meta">히트뉴스 · 2026-09-04</span></a></section>
+<section class="comp-card" data-name="보령"><h2 class="comp-name">보령 <span class="comp-count">1건</span></h2><a href="https://www.hitnews.co.kr/news/articleView.html?idxno=78893" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">[경력채용] 대원제약, 삼일제약, 보령바이오파마, 한풍제약, 클래시스</span><span class="comp-item-meta">히트뉴스 · 2026-09-04</span></a></section>
+<section class="comp-card" data-name="일동제약"><h2 class="comp-name">일동제약 <span class="comp-count">1건</span></h2><a href="https://www.hitnews.co.kr/news/articleView.html?idxno=78890" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">[주식] GC녹십자웰빙 &#x27;지방분해 주사&#x27; 중국 문 열까...주가 16%↑</span><span class="comp-item-meta">히트뉴스 · 2026-09-03</span></a></section>
+<section class="comp-card" data-name="국제약품"><h2 class="comp-name">국제약품 <span class="comp-count">2건</span></h2><a href="http://www.docdocdoc.co.kr/news/articleView.html?idxno=3042429" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">국제약품, 해열진통소염제 ‘펠로펜정’ 출시</span><span class="comp-item-meta">청년의사 · 2026-09-03</span></a>
+<a href="https://www.pharmnews.com/news/articleView.html?idxno=306032" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">국제약품, 해열진통소염제 ‘펠로펜정(Pelubiprofen 30mg)’ 출시</span><span class="comp-item-meta">팜뉴스 · 2026-09-03</span></a></section>
+<section class="comp-card" data-name="동화약품"><h2 class="comp-name">동화약품 <span class="comp-count">1건</span></h2><a href="https://www.hitnews.co.kr/news/articleView.html?idxno=78858" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">GC녹십자, &#x27;탁센&#x27; 중심 OTC에 어린이·여성 성장축 더했다</span><span class="comp-item-meta">히트뉴스 · 2026-09-03</span></a></section>
+<section class="comp-card" data-name="동국제약"><h2 class="comp-name">동국제약 <span class="comp-count">1건</span></h2><a href="https://www.hitnews.co.kr/news/articleView.html?idxno=78858" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">GC녹십자, &#x27;탁센&#x27; 중심 OTC에 어린이·여성 성장축 더했다</span><span class="comp-item-meta">히트뉴스 · 2026-09-03</span></a></section>
+<section class="comp-card" data-name="제일약품"><h2 class="comp-name">제일약품 <span class="comp-count">1건</span></h2><a href="https://www.pharmnews.com/news/articleView.html?idxno=306029" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">제일파마홀딩스, 전 계열사 팀장 대상 계약 실무·공정거래법 교육 진행</span><span class="comp-item-meta">팜뉴스 · 2026-09-03</span></a></section>
+<section class="comp-card" data-name="휴온스"><h2 class="comp-name">휴온스 <span class="comp-count">1건</span></h2><a href="https://www.pharmnews.com/news/articleView.html?idxno=306028" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">휴온스엔 춘천공장, 공정안전관리(PSM) 승인 획득</span><span class="comp-item-meta">팜뉴스 · 2026-09-03</span></a></section>
+<section class="comp-card" data-name="삼진제약"><h2 class="comp-name">삼진제약 <span class="comp-count">3건</span></h2><a href="http://www.docdocdoc.co.kr/news/articleView.html?idxno=3042396" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">삼진제약, 마포구청 ‘사회공헌 감사패’ 받아</span><span class="comp-item-meta">청년의사 · 2026-09-03</span></a>
+<a href="https://www.pharmnews.com/news/articleView.html?idxno=306025" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">삼진제약, 마포구청 &#x27;사회공헌 감사패&#x27; 수여</span><span class="comp-item-meta">팜뉴스 · 2026-09-03</span></a>
+<a href="https://www.medicopharma.co.kr/news/articleView.html?idxno=69390" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">아리바이오 지분 ‘효자’된 삼진제약…3개월새 가치 204억 늘어</span><span class="comp-item-meta">메디코파마 · 2026-09-03</span></a></section>
+<section class="comp-card" data-name="유유제약"><h2 class="comp-name">유유제약 <span class="comp-count">1건</span></h2><a href="https://www.pharmnews.com/news/articleView.html?idxno=306021" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">유유제약, 충북 직업계고 학부모 초청 제천공장 탐방 행사 진행</span><span class="comp-item-meta">팜뉴스 · 2026-09-03</span></a></section>
+<section class="comp-card" data-name="한올바이오파마"><h2 class="comp-name">한올바이오파마 <span class="comp-count">1건</span></h2><a href="https://www.medicopharma.co.kr/news/articleView.html?idxno=69388" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">한올바이오파마, 바토클리맙 TED 3상 실패 여파…개발비 153억 손상</span><span class="comp-item-meta">메디코파마 · 2026-09-03</span></a></section>
+<section class="comp-card" data-name="경보제약"><h2 class="comp-name">경보제약 <span class="comp-count">1건</span></h2><a href="https://www.pharmnews.com/news/articleView.html?idxno=306012" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">150조 국민성장펀드 올라탄 K-제약바이오…4社 4色 성장 전략은</span><span class="comp-item-meta">팜뉴스 · 2026-09-03</span></a></section>
+<section class="comp-card" data-name="셀트리온제약"><h2 class="comp-name">셀트리온제약 <span class="comp-count">1건</span></h2><a href="https://www.medicopharma.co.kr/news/articleView.html?idxno=69382" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">셀트리온제약, 바이오·CMO 비중 54%…케미컬 제치고 성장축 이동</span><span class="comp-item-meta">메디코파마 · 2026-09-02</span></a></section>
+<section class="comp-card" data-name="유한양행"><h2 class="comp-name">유한양행 <span class="comp-count">1건</span></h2><a href="https://www.medicopharma.co.kr/news/articleView.html?idxno=69376" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">유한양행, 올해 API 신규 수주만 4000억…유한화학 캐파가 관건</span><span class="comp-item-meta">메디코파마 · 2026-09-02</span></a></section>
+<section class="comp-card" data-name="일양약품"><h2 class="comp-name">일양약품 <span class="comp-count">1건</span></h2><a href="https://www.medicopharma.co.kr/news/articleView.html?idxno=69374" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">일양약품, 中 원비디 사업 재가동…길림법인에 23억 추가 출자</span><span class="comp-item-meta">메디코파마 · 2026-09-02</span></a></section>
+<section class="comp-card" data-name="동구바이오제약"><h2 class="comp-name">동구바이오제약 <span class="comp-count">1건</span></h2><a href="https://www.medicopharma.co.kr/news/articleView.html?idxno=69363" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">동구바이오제약, 조직체계 개편…경영·미래전략 보고라인 통합</span><span class="comp-item-meta">메디코파마 · 2026-09-01</span></a></section>
+<section class="comp-card" data-name="신신제약"><h2 class="comp-name">신신제약 <span class="comp-count">1건</span></h2><a href="https://www.medicopharma.co.kr/news/articleView.html?idxno=69366" target="_blank" rel="noopener" class="comp-item"><span class="comp-item-title">신신파스 아렉스, 올해 브랜드 대상 9년 연속 수상</span><span class="comp-item-meta">메디코파마 · 2026-09-01</span></a></section>
+  </div>
+</main>
+<script>
+function filterComps(q) {
+  q = q.trim();
+  document.querySelectorAll('.comp-card').forEach(c => {
+    c.style.display = (!q || c.dataset.name.includes(q)) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
