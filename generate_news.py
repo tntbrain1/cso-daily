@@ -197,6 +197,23 @@ def get_articles() -> list[dict]:
 
 
 # ── Claude 요약·분류 ──────────────────────────────────────────────
+def fallback_articles(articles: list[dict]) -> list[dict]:
+    """Claude 요약 실패 시 원본 제목·설명으로 카드 구성 (빈 페이지 방지)"""
+    return [
+        {
+            "category": "cso",
+            "headline": a["title"][:60],
+            "summary": a["desc"][:150] or a["title"],
+            "impact": "medium",
+            "url": a["url"],
+            "source": a["source"],
+            "pub": a["pub"],
+        }
+        for a in articles[:MAX_NEWS_CARDS]
+    ]
+
+
+
 def summarize_with_claude(articles: list[dict]) -> list[dict]:
     if not articles:
         return []
@@ -245,30 +262,35 @@ def summarize_with_claude(articles: list[dict]) -> list[dict]:
 
 기사가 CSO 업무와 무관하면 해당 항목 생략.
 반드시 실제 기사 내용만 사용, 추가 사실 삽입 금지.
+응답은 JSON 배열 하나만 출력하고, 앞뒤에 설명·코드블록 등 다른 텍스트를 붙이지 마세요.
 
 --- 기사 목록 ---
 {articles_text}
 """
 
     print("  🤖 Claude 요약 중...")
-    message = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=4096,
-        messages=[{"role": "user", "content": prompt}],
-    )
+    try:
+        message = client.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=4096,
+            messages=[{"role": "user", "content": prompt}],
+        )
+    except Exception as e:
+        print(f"  ⚠️ Claude API 오류: {e} — 원본 기사로 대체")
+        return fallback_articles(articles)
 
     raw = message.content[0].text.strip()
-    # JSON 블록 추출
-    match = re.search(r"\[[\s\S]*\]", raw)
-    if not match:
-        print("  ⚠️ Claude 응답에서 JSON 추출 실패")
-        return []
-
-    try:
-        summarized = json.loads(match.group())
-    except json.JSONDecodeError as e:
-        print(f"  ⚠️ JSON 파싱 오류: {e}")
-        return []
+    # JSON 배열 추출: 첫 '[' 부터 raw_decode 로 안전하게 파싱 (뒤에 잡담이 붙어도 무시)
+    summarized = None
+    start = raw.find("[")
+    if start >= 0:
+        try:
+            summarized, _ = json.JSONDecoder().raw_decode(raw[start:])
+        except json.JSONDecodeError as e:
+            print(f"  ⚠️ JSON 파싱 오류: {e}")
+    if not isinstance(summarized, list):
+        print("  ⚠️ Claude 응답 파싱 실패 — 원본 기사로 대체")
+        return fallback_articles(articles)
 
     # 원본 기사 정보 병합
     for item in summarized:
